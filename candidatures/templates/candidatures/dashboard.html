@@ -27,71 +27,47 @@
 
 <div class="row mb-4">
     <div class="col-md-4">
-        <div class="card text-white bg-primary">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h4 class="card-title">{{ total_candidatures }}</h4>
-                        <p class="card-text">Candidatures</p>
-                    </div>
-                    <div class="align-self-center">
-                        <i class="bi bi-file-text fs-1"></i>
-                    </div>
-                </div>
+        <div class="stats-card">
+            <div class="icon-wrapper icon-primary">
+                <i class="bi bi-file-text"></i>
             </div>
-            <div class="card-footer">
-                <a href="{% url 'candidatures:candidature-list' %}" class="text-white text-decoration-none">
-                    Voir tout <i class="bi bi-arrow-right"></i>
-                </a>
-            </div>
+            <div class="stats-number">{{ total_candidatures }}</div>
+            <div class="stats-label">Candidatures</div>
+            <a href="{% url 'candidatures:candidature-list' %}" class="stats-link">
+                Voir tout <i class="bi bi-arrow-right"></i>
+            </a>
         </div>
     </div>
     
     <div class="col-md-4">
-        <div class="card text-white bg-success">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h4 class="card-title">{{ total_pistes }}</h4>
-                        <p class="card-text">Pistes</p>
-                    </div>
-                    <div class="align-self-center">
-                        <i class="bi bi-compass fs-1"></i>
-                    </div>
-                </div>
+        <div class="stats-card">
+            <div class="icon-wrapper icon-success">
+                <i class="bi bi-compass"></i>
             </div>
-            <div class="card-footer">
-                <a href="{% url 'candidatures:piste-list' %}" class="text-white text-decoration-none">
-                    Voir tout <i class="bi bi-arrow-right"></i>
-                </a>
-            </div>
+            <div class="stats-number">{{ total_pistes }}</div>
+            <div class="stats-label">Pistes</div>
+            <a href="{% url 'candidatures:piste-list' %}" class="stats-link">
+                Voir tout <i class="bi bi-arrow-right"></i>
+            </a>
         </div>
     </div>
     
     <div class="col-md-4">
-        <div class="card text-white bg-info">
-            <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <div>
-                        <h4 class="card-title">
-                            {% if active_period %}
-                                {{ active_period.candidatures.count }}
-                            {% else %}
-                                0
-                            {% endif %}
-                        </h4>
-                        <p class="card-text">Candidatures cette période</p>
-                    </div>
-                    <div class="align-self-center">
-                        <i class="bi bi-calendar3 fs-1"></i>
-                    </div>
-                </div>
+        <div class="stats-card">
+            <div class="icon-wrapper icon-info">
+                <i class="bi bi-calendar3"></i>
             </div>
-            <div class="card-footer">
-                <a href="{% url 'candidatures:periode-list' %}" class="text-white text-decoration-none">
-                    Gérer les périodes <i class="bi bi-arrow-right"></i>
-                </a>
+            <div class="stats-number">
+                {% if active_period %}
+                    {{ active_period.candidatures.count }}
+                {% else %}
+                    0
+                {% endif %}
             </div>
+            <div class="stats-label">Candidatures cette période</div>
+            <a href="{% url 'candidatures:periode-list' %}" class="stats-link">
+                Gérer les périodes <i class="bi bi-arrow-right"></i>
+            </a>
         </div>
     </div>
 </div>
@@ -126,18 +102,20 @@
                                     <td>{{ candidature.entreprise }}</td>
                                     <td>{{ candidature.poste }}</td>
                                     <td>
-                                        <span class="badge bg-secondary">{{ candidature.statut }}</span>
+                                        <span class="badge badge-custom badge-gray">{{ candidature.statut }}</span>
                                     </td>
                                     <td>{{ candidature.date_candidature }}</td>
                                     <td>
-                                        <a href="{% url 'candidatures:candidature-detail' candidature.pk %}" 
-                                           class="btn btn-sm btn-outline-primary">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-                                        <a href="{% url 'candidatures:candidature-update' candidature.pk %}" 
-                                           class="btn btn-sm btn-outline-secondary">
-                                            <i class="bi bi-pencil"></i>
-                                        </a>
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'candidatures:candidature-detail' candidature.pk %}" 
+                                               class="btn btn-sm btn-outline-primary btn-action" title="Voir">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a href="{% url 'candidatures:candidature-update' candidature.pk %}" 
+                                               class="btn btn-sm btn-outline-secondary btn-action" title="Modifier">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                                 {% endfor %}

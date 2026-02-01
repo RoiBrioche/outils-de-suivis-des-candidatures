@@ -143,25 +143,25 @@
                             <td>
                                 <strong>{{ candidature.entreprise }}</strong>
                                 {% if candidature.remote %}
-                                    <span class="badge bg-info ms-1">Remote</span>
+                                    <span class="badge badge-custom badge-blue ms-1">Remote</span>
                                 {% endif %}
                             </td>
                             <td>{{ candidature.poste }}</td>
                             <td>
-                                <span class="badge bg-light text-dark">{{ candidature.get_type_contrat_display }}</span>
+                                <span class="badge badge-custom badge-gray">{{ candidature.get_type_contrat_display }}</span>
                             </td>
                             <td>
-                                <span class="badge bg-primary">{{ candidature.statut }}</span>
+                                <span class="badge badge-custom badge-blue">{{ candidature.statut }}</span>
                             </td>
                             <td>{{ candidature.date_candidature }}</td>
                             <td>
                                 {% if candidature.priorite %}
                                     {% if candidature.priorite == 'ELEVEE' %}
-                                        <span class="badge bg-danger">{{ candidature.get_priorite_display }}</span>
+                                        <span class="badge badge-custom badge-red">{{ candidature.get_priorite_display }}</span>
                                     {% elif candidature.priorite == 'NORMALE' %}
-                                        <span class="badge bg-warning">{{ candidature.get_priorite_display }}</span>
+                                        <span class="badge badge-custom badge-yellow">{{ candidature.get_priorite_display }}</span>
                                     {% else %}
-                                        <span class="badge bg-secondary">{{ candidature.get_priorite_display }}</span>
+                                        <span class="badge badge-custom badge-gray">{{ candidature.get_priorite_display }}</span>
                                     {% endif %}
                                 {% else %}
                                     <span class="text-muted">-</span>
@@ -173,15 +173,15 @@
                             <td>
                                 <div class="btn-group" role="group">
                                     <a href="{% url 'candidatures:candidature-detail' candidature.pk %}" 
-                                       class="btn btn-sm btn-outline-primary" title="Voir">
+                                       class="btn btn-sm btn-outline-primary btn-action" title="Voir">
                                         <i class="bi bi-eye"></i>
                                     </a>
                                     <a href="{% url 'candidatures:candidature-update' candidature.pk %}" 
-                                       class="btn btn-sm btn-outline-secondary" title="Modifier">
+                                       class="btn btn-sm btn-outline-secondary btn-action" title="Modifier">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <a href="{% url 'candidatures:candidature-delete' candidature.pk %}" 
-                                       class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                       class="btn btn-sm btn-outline-danger btn-action" title="Supprimer">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>

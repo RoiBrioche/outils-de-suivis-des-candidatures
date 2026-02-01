@@ -14,36 +14,55 @@
     <div class="row">
         {% for piste in pistes %}
             <div class="col-md-6 mb-3">
-                <div class="card">
+                <div class="piste-card">
                     <div class="card-body">
                         <h5 class="card-title">{{ piste.entreprise }}</h5>
+                        
                         {% if piste.poste_cible %}
-                            <p class="card-text"><strong>Poste:</strong> {{ piste.poste_cible }}</p>
+                            <div class="info-row">
+                                <span class="info-label">Poste:</span>
+                                <span class="info-value">{{ piste.poste_cible }}</span>
+                            </div>
                         {% endif %}
+                        
                         {% if piste.source %}
-                            <p class="card-text"><strong>Source:</strong> {{ piste.source }}</p>
+                            <div class="info-row">
+                                <span class="info-label">Source:</span>
+                                <span class="info-value">{{ piste.source }}</span>
+                            </div>
                         {% endif %}
-                        <p class="card-text">
-                            <span class="badge bg-{{ piste.get_etat_display|default:'secondary' }}">
-                                {{ piste.get_etat_display }}
+                        
+                        <div class="info-row">
+                            <span class="info-label">Statut:</span>
+                            <span class="badge badge-custom badge-{{ piste.get_etat_display|default:'gray' }}">
+                                {{ piste.get_etat_display|default:'Non défini' }}
                             </span>
-                        </p>
+                        </div>
+                        
                         {% if piste.contact %}
-                            <p class="card-text"><strong>Contact:</strong> {{ piste.contact }}</p>
+                            <div class="info-row">
+                                <span class="info-label">Contact:</span>
+                                <span class="info-value">{{ piste.contact }}</span>
+                            </div>
                         {% endif %}
-                        <p class="card-text text-muted">
-                            <small>Créée le {{ piste.created_at|date:"d/m/Y" }}</small>
-                        </p>
-                        <div class="btn-group" role="group">
-                            <a href="{% url 'candidatures:piste-detail' piste.pk %}" class="btn btn-outline-primary btn-sm">
-                                <i class="bi bi-eye"></i> Voir
-                            </a>
-                            <a href="{% url 'candidatures:piste-update' piste.pk %}" class="btn btn-outline-secondary btn-sm">
-                                <i class="bi bi-pencil"></i> Modifier
-                            </a>
-                            <a href="{% url 'candidatures:piste-delete' piste.pk %}" class="btn btn-outline-danger btn-sm">
-                                <i class="bi bi-trash"></i> Supprimer
-                            </a>
+                        
+                        <div class="info-row">
+                            <span class="info-label">Créée le:</span>
+                            <span class="info-value text-muted">{{ piste.created_at|date:"d/m/Y" }}</span>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <div class="btn-group" role="group">
+                                <a href="{% url 'candidatures:piste-detail' piste.pk %}" class="btn btn-outline-primary btn-sm btn-action" title="Voir">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a href="{% url 'candidatures:piste-update' piste.pk %}" class="btn btn-outline-secondary btn-sm btn-action" title="Modifier">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a href="{% url 'candidatures:piste-delete' piste.pk %}" class="btn btn-outline-danger btn-sm btn-action" title="Supprimer">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
