@@ -1,0 +1,211 @@
+{% extends 'candidatures/base.html' %}
+
+{% block title %}Tableau de bord - Job Application Tracker{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">
+            <i class="bi bi-speedometer2"></i> Tableau de bord
+        </h1>
+    </div>
+</div>
+
+{% if active_period %}
+<div class="alert alert-info">
+    <i class="bi bi-info-circle"></i> 
+    <strong>Période active :</strong> {{ active_period.nom }} 
+    ({{ active_period.date_debut }} - {{ active_period.date_fin|default:"en cours" }})
+</div>
+{% else %}
+<div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle"></i> 
+    <strong>Aucune période active</strong> - 
+    <a href="{% url 'candidatures:periode-create' %}" class="alert-link">Créer une période</a>
+</div>
+{% endif %}
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title">{{ total_candidatures }}</h4>
+                        <p class="card-text">Candidatures</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-file-text fs-1"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'candidatures:candidature-list' %}" class="text-white text-decoration-none">
+                    Voir tout <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title">{{ total_pistes }}</h4>
+                        <p class="card-text">Pistes</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-compass fs-1"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'candidatures:piste-list' %}" class="text-white text-decoration-none">
+                    Voir tout <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card text-white bg-info">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h4 class="card-title">
+                            {% if active_period %}
+                                {{ active_period.candidatures.count }}
+                            {% else %}
+                                0
+                            {% endif %}
+                        </h4>
+                        <p class="card-text">Candidatures cette période</p>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="bi bi-calendar3 fs-1"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'candidatures:periode-list' %}" class="text-white text-decoration-none">
+                    Gérer les périodes <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">
+                    <i class="bi bi-clock-history"></i> Candidatures récentes
+                </h5>
+                <a href="{% url 'candidatures:candidature-create' %}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-circle"></i> Nouvelle candidature
+                </a>
+            </div>
+            <div class="card-body">
+                {% if recent_candidatures %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Entreprise</th>
+                                    <th>Poste</th>
+                                    <th>Statut</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for candidature in recent_candidatures %}
+                                <tr>
+                                    <td>{{ candidature.entreprise }}</td>
+                                    <td>{{ candidature.poste }}</td>
+                                    <td>
+                                        <span class="badge bg-secondary">{{ candidature.statut }}</span>
+                                    </td>
+                                    <td>{{ candidature.date_candidature }}</td>
+                                    <td>
+                                        <a href="{% url 'candidatures:candidature-detail' candidature.pk %}" 
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="{% url 'candidatures:candidature-update' candidature.pk %}" 
+                                           class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="bi bi-inbox fs-1 text-muted"></i>
+                        <p class="text-muted mt-2">Aucune candidature pour le moment</p>
+                        <a href="{% url 'candidatures:candidature-create' %}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Créer la première candidature
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-lightning"></i> Actions rapides
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'candidatures:candidature-create' %}" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Nouvelle candidature
+                    </a>
+                    <a href="{% url 'candidatures:piste-create' %}" class="btn btn-success">
+                        <i class="bi bi-plus-circle"></i> Nouvelle piste
+                    </a>
+                    <a href="{% url 'candidatures:periode-create' %}" class="btn btn-info">
+                        <i class="bi bi-plus-circle"></i> Nouvelle période
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-graph-up"></i> Navigation rapide
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'candidatures:candidature-list' %}" class="list-group-item list-group-item-action">
+                        <i class="bi bi-file-text"></i> Toutes les candidatures
+                    </a>
+                    <a href="{% url 'candidatures:piste-list' %}" class="list-group-item list-group-item-action">
+                        <i class="bi bi-compass"></i> Toutes les pistes
+                    </a>
+                    <a href="{% url 'candidatures:statut-list' %}" class="list-group-item list-group-item-action">
+                        <i class="bi bi-tag"></i> Gérer les statuts
+                    </a>
+                    <a href="/admin/" class="list-group-item list-group-item-action">
+                        <i class="bi bi-gear"></i> Administration
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

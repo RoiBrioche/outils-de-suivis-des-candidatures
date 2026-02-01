@@ -1,0 +1,100 @@
+{% extends "candidatures/base.html" %}
+
+{% block title %}Ajouter un document{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    <i class="bi bi-file-earmark-plus"></i> Ajouter un document
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.type_document.id_for_label }}" class="form-label">
+                                    {{ form.type_document.label }} *
+                                </label>
+                                {{ form.type_document }}
+                                {% if form.type_document.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.type_document.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.nom_fichier.id_for_label }}" class="form-label">
+                                    {{ form.nom_fichier.label }} *
+                                </label>
+                                {{ form.nom_fichier }}
+                                {% if form.nom_fichier.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.nom_fichier.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.commentaire.id_for_label }}" class="form-label">
+                            {{ form.commentaire.label }}
+                        </label>
+                        {{ form.commentaire }}
+                        {% if form.commentaire.errors %}
+                            <div class="text-danger">
+                                {% for error in form.commentaire.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'candidatures:candidature-detail' form.candidature.value %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Retour à la candidature
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle"></i> Ajouter le document
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add form-control class to all form fields
+    const formFields = document.querySelectorAll('input, select, textarea');
+    formFields.forEach(field => {
+        if (!field.classList.contains('form-control')) {
+            field.classList.add('form-control');
+        }
+    });
+});
+</script>
+{% endblock %}

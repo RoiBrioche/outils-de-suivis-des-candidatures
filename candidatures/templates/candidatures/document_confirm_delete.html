@@ -1,0 +1,53 @@
+{% extends "candidatures/base.html" %}
+
+{% block title %}Supprimer le document{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-exclamation-triangle"></i> Confirmer la suppression
+                </h4>
+            </div>
+            <div class="card-body">
+                <p>Êtes-vous sûr de vouloir supprimer le document suivant ?</p>
+                
+                <div class="alert alert-warning">
+                    <h5>{{ document.nom_fichier }}</h5>
+                    <p class="mb-0">
+                        <strong>Type:</strong> {{ document.get_type_document_display }}<br>
+                        <strong>Ajouté le:</strong> {{ document.date_ajout|date:"d/m/Y H:i" }}<br>
+                        <strong>Candidature:</strong> 
+                        <a href="{% url 'candidatures:candidature-detail' document.candidature.pk %}">
+                            {{ document.candidature.poste }} chez {{ document.candidature.entreprise }}
+                        </a>
+                    </p>
+                </div>
+                
+                {% if document.commentaire %}
+                    <div class="mb-3">
+                        <strong>Commentaire:</strong>
+                        <div class="border rounded p-2 bg-light">
+                            {{ document.commentaire|linebreaks }}
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'candidatures:candidature-detail' document.candidature.pk %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Annuler
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Supprimer définitivement
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

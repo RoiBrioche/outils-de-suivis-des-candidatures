@@ -1,0 +1,143 @@
+{% extends "candidatures/base.html" %}
+
+{% block title %}
+    {% if object %}
+        Modifier le statut
+    {% else %}
+        Nouveau statut
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    {% if object %}
+                        <i class="bi bi-pencil"></i> Modifier le statut
+                    {% else %}
+                        <i class="bi bi-plus-circle"></i> Nouveau statut
+                    {% endif %}
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.nom.id_for_label }}" class="form-label">
+                                    {{ form.nom.label }} *
+                                </label>
+                                {{ form.nom }}
+                                {% if form.nom.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.nom.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.code.id_for_label }}" class="form-label">
+                                    {{ form.code.label }}
+                                </label>
+                                {{ form.code }}
+                                {% if form.code.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.code.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                <small class="form-text text-muted">Code technique unique pour les traitements</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.ordre_affichage.id_for_label }}" class="form-label">
+                                    {{ form.ordre_affichage.label }}
+                                </label>
+                                {{ form.ordre_affichage }}
+                                {% if form.ordre_affichage.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.ordre_affichage.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <div class="form-check mt-4">
+                                    {{ form.actif }}
+                                    <label class="form-check-label" for="{{ form.actif.id_for_label }}">
+                                        {{ form.actif.label }}
+                                    </label>
+                                </div>
+                                {% if form.actif.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.actif.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'candidatures:statut-list' %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Retour à la liste
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle"></i> 
+                            {% if object %}
+                                Mettre à jour
+                            {% else %}
+                                Créer le statut
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add form-control class to all form fields
+    const formFields = document.querySelectorAll('input, select, textarea');
+    formFields.forEach(field => {
+        if (!field.classList.contains('form-control') && field.type !== 'checkbox') {
+            field.classList.add('form-control');
+        }
+    });
+    
+    // Add form-check-input class to checkbox
+    const checkbox = document.querySelector('input[type="checkbox"]');
+    if (checkbox && !checkbox.classList.contains('form-check-input')) {
+        checkbox.classList.add('form-check-input');
+    }
+});
+</script>
+{% endblock %}

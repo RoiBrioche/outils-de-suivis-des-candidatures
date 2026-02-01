@@ -1,0 +1,112 @@
+{% extends "candidatures/base.html" %}
+
+{% block title %}{{ statut.nom }} - Détail du statut{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-tag"></i> Détail du statut</h1>
+    <a href="{% url 'candidatures:statut-update' statut.pk %}" class="btn btn-outline-secondary">
+        <i class="bi bi-pencil"></i> Modifier
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">{{ statut.nom }}</h4>
+                    {% if statut.actif %}
+                        <span class="badge bg-success">Actif</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Inactif</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Nom:</strong> {{ statut.nom }}</p>
+                        <p><strong>Code technique:</strong> <code>{{ statut.code }}</code></p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Ordre d'affichage:</strong> {{ statut.ordre_affichage }}</p>
+                        <p><strong>Créé le:</strong> {{ statut.created_at|date:"d/m/Y H:i" }}</p>
+                    </div>
+                </div>
+                
+                <div class="mt-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body text-center">
+                            <h2>{{ statut.candidatures.count }}</h2>
+                            <p class="mb-0">Candidatures avec ce statut</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Actions rapides</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'candidatures:statut-update' statut.pk %}" class="btn btn-primary">
+                        <i class="bi bi-pencil"></i> Modifier le statut
+                    </a>
+                    <a href="{% url 'candidatures:statut-list' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Retour à la liste
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if candidatures %}
+    <div class="mt-5">
+        <h2>Candidatures avec ce statut</h2>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Entreprise</th>
+                        <th>Poste</th>
+                        <th>Date de candidature</th>
+                        <th>Période</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for candidature in candidatures %}
+                        <tr>
+                            <td>{{ candidature.entreprise }}</td>
+                            <td>{{ candidature.poste }}</td>
+                            <td>{{ candidature.date_candidature|date:"d/m/Y" }}</td>
+                            <td>
+                                <a href="{% url 'candidatures:periode-detail' candidature.periode_recherche.pk %}">
+                                    {{ candidature.periode_recherche.nom }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="{% url 'candidatures:candidature-detail' candidature.pk %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye"></i> Voir
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% else %}
+    <div class="mt-5">
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> Aucune candidature n'a actuellement ce statut.
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

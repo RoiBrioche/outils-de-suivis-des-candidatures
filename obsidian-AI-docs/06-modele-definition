@@ -1,0 +1,524 @@
+# 🧩 Modèle de données – Suivi de candidatures (MVP)
+
+Cette note formalise le **modèle de données métier** du logiciel de suivi de candidatures.  
+L’objectif est de disposer d’un schéma :
+- clair et cohérent,
+- simple à implémenter en MVP,
+- extensible sans refonte majeure,
+- compatible avec une importation depuis Excel.
+
+---
+
+## 1️⃣ Entité principale : `Candidature`
+
+### 🎯 Rôle
+Représente une **candidature unique**.  
+C’est l’entité centrale autour de laquelle s’articulent les statuts, priorités et documents.
+
+---
+
+### 📌 Champs principaux
+
+| Champ              | Type               | Contraintes | Description          |
+| ------------------ | ------------------ | ----------- | -------------------- |
+| `id`               | UUID               | PK          | Identifiant unique   |
+| `periode_id`       | UUID               | FK          | Période de recherche |
+| `entreprise`       | String             | NOT NULL    | Nom de l’entreprise  |
+| `poste`            | String             | NOT NULL    | Intitulé du poste    |
+| `localisation`     | String             | NULL        | Ville / zone         |
+| `contrat`          | Enum `TypeContrat` | NULL        | Type de contrat      |
+| `canal`            | String             | NULL        | Plateforme ou canal  |
+| `date_candidature` | Date               | NOT NULL    | Date d’envoi         |
+| `commentaires`     | Text               | NULL        | Notes libres         |
+
+---
+
+## 2️⃣ Statut d’avancement de la candidature
+
+### 🧠 Principe
+- Chaque candidature possède **un statut principal unique**.
+- Le statut est stocké comme une **référence vers un référentiel de statuts**.
+- Certaines informations contextuelles peuvent être associées au statut.
+
+---
+
+### Champs liés au statut
+
+| Champ | Type | Contraintes | Description |
+|-----|-----|------------|------------|
+| `statut_id` | UUID | FK → `Statut` | Statut principal |
+| `statut_contextuel` | JSON / Text | NULL | Infos liées au statut |
+| `date_statut` | Date | NOT NULL | Dernier changement |
+
+---
+
+### Exemples de données contextuelles
+
+```json
+{ "etape": "Entretien technique" }
+```
+
+```json
+{ "raison_refus": "Poste pourvu" }
+```
+
+> Le champ `statut_contextuel` permet d’affiner l’analyse **sans complexifier le statut principal**.
+
+---
+
+## 3️⃣ Indicateur de priorité
+
+### 🎯 Objectif
+Mettre en évidence certaines candidatures **indépendamment du statut**.
+
+---
+
+### Champs de priorité
+
+| Champ | Type | Contraintes | Description |
+|-----|-----|------------|------------|
+| `priorite` | Enum `Priorite` | NULL | Niveau de priorité |
+| `priorite_source` | Enum `SourcePriorite` | NULL | Automatique / Manuelle |
+| `date_priorite` | Date | NULL | Date d’application |
+
+---
+
+### Règles métier (MVP)
+
+- Une seule priorité active par candidature
+- La priorité **manuelle prévaut** sur l’automatique
+- La priorité entraîne une **mise en évidence visuelle unique**
+
+---
+
+## 4️⃣ Métadonnées techniques
+
+| Champ | Type | Description |
+|-----|-----|------------|
+| `created_at` | DateTime | Date de création |
+| `updated_at` | DateTime | Dernière modification |
+
+---
+
+## 5️⃣ Entité `Statut`
+
+### 🎯 Rôle
+Référentiel des statuts d’avancement.  
+Extensible par l’utilisateur.
+
+---
+
+### Champs
+
+| Champ | Type | Contraintes | Description |
+|-----|-----|------------|------------|
+| `id` | UUID | PK | Identifiant |
+| `nom` | String | UNIQUE | Nom affiché |
+| `code` | String | UNIQUE | Code technique |
+| `actif` | Boolean | DEFAULT true | Actif ou non |
+| `ordre_affichage` | Integer | | Ordre UI |
+| `created_at` | DateTime | | |
+
+---
+
+### Statuts par défaut (MVP)
+
+```text
+EN_ATTENTE   → En attente
+EN_COURS     → En cours
+REFUSEE      → Refusée
+CLOTUREE     → Clôturée
+```
+
+---
+
+## 6️⃣ Entité `DocumentCandidature`
+
+### 🎯 Rôle
+Représente un **document associé à une candidature**  
+(CV, lettre de motivation, ou autre pièce).
+
+---
+
+### Champs
+
+| Champ | Type | Contraintes | Description |
+|-----|-----|------------|------------|
+| `id` | UUID | PK | Identifiant |
+| `candidature_id` | UUID | FK | Candidature liée |
+| `type_document` | Enum `TypeDocument` | NOT NULL | Type |
+| `nom_fichier` | String | NOT NULL | Nom affiché |
+| `chemin_fichier` | String | NOT NULL | Chemin ou URL |
+| `mime_type` | String | NULL | PDF, DOCX… |
+| `taille` | Integer | NULL | Taille en octets |
+| `date_ajout` | DateTime | NOT NULL | Date d’ajout |
+| `commentaire` | Text | NULL | Optionnel |
+
+---
+
+### Types de documents (MVP)
+
+```text
+CV
+LETTRE_MOTIVATION
+AUTRE
+```
+
+> Une candidature peut être liée à **plusieurs documents**, permettant de suivre précisément le travail effectué.
+
+---
+
+## 7️⃣ Enumérations
+
+### `TypeContrat`
+
+```text
+CDI
+CDD
+ALTERNANCE
+STAGE
+FREELANCE
+AUTRE
+```
+
+---
+
+### `Priorite`
+
+```text
+FAIBLE
+NORMALE
+ELEVEE
+```
+
+---
+
+### `SourcePriorite`
+
+```text
+AUTOMATIQUE
+MANUELLE
+```
+
+---
+
+## 8️⃣ Exemple de structure JSON (vue logique)
+
+```json
+{
+  "entreprise": "Capgemini",
+  "poste": "Assistant chef de projet IT",
+  "contrat": "ALTERNANCE",
+  "statut": {
+    "code": "EN_COURS",
+    "contextuel": {
+      "etape": "Entretien technique"
+    }
+  },
+  "priorite": {
+    "niveau": "ELEVEE",
+    "source": "MANUELLE"
+  },
+  "documents": [
+    { "type": "CV", "nom": "CV_2025.pdf" },
+    { "type": "LETTRE_MOTIVATION", "nom": "LM_Capgemini.pdf" }
+  ]
+}
+```
+
+---
+
+## 🚀 Évolutions possibles (hors MVP)
+
+- Historisation des changements de statut
+- Versionnement des documents
+- Stockage cloud (S3, Nextcloud…)
+- Modèle statistique avancé
+- Synchronisation avec Obsidian / Notion
+
+---
+
+🎯 **Objectif du modèle :**  
+Disposer d’une base de données claire, maintenable et orientée exploitation, tout en restant pragmatique pour un MVP.
+
+
+# 🧩 Modèle de données – Période de recherche d’emploi
+
+Cette note définit le modèle métier **`PeriodeRecherche`**.
+
+Une période de recherche représente un **cycle cohérent de recherche d’emploi**, servant de conteneur aux candidatures et aux pistes.
+
+---
+
+## 🎯 Rôle métier
+
+- Structurer les recherches dans le temps
+- Permettre l’archivage et la comparaison
+- Faciliter les statistiques et analyses
+- Éviter le mélange de contextes différents
+
+---
+
+## 🧩 Entité : `PeriodeRecherche`
+
+### Champs principaux
+
+| Champ | Type | Contraintes | Description |
+|-----|-----|------------|------------|
+| `id` | UUID | PK | Identifiant unique |
+| `nom` | String | NOT NULL | Nom de la période |
+| `description` | Text | NULL | Contexte / objectif |
+| `date_debut` | Date | NOT NULL | Début de la période |
+| `date_fin` | Date | NULL | Fin de la période |
+| `active` | Boolean | DEFAULT true | Période active |
+| `created_at` | DateTime | | |
+| `updated_at` | DateTime | | |
+
+---
+
+## 🔗 Relations
+
+- `PeriodeRecherche` → `Candidature` (1 → N)
+- `PeriodeRecherche` → `PisteCandidature` (1 → N)
+
+---
+
+## 🧠 Règles métier (MVP)
+
+- Une seule période **active** recommandée à la fois
+- Toute nouvelle candidature est :
+  - automatiquement rattachée à la période active
+- Une période clôturée reste consultable mais non modifiable
+
+---
+
+## 🚀 Évolutions possibles
+
+- Périodes imbriquées
+- Objectifs chiffrés (nombre de candidatures)
+- Tags / catégories
+- Indicateurs de performance
+
+---
+
+🎯 **Objectif du modèle**  
+Structurer l’ensemble du projet autour de cycles de recherche clairement identifiés.
+
+
+# 🧩 Modèle de données – Piste de candidature
+
+Cette note définit le modèle **`PisteCandidature`**.
+
+Une piste représente une **opportunité identifiée** mais **non encore transformée** en candidature formelle.
+
+---
+
+## 🎯 Rôle métier
+
+- Centraliser les opportunités repérées
+- Séparer l’exploration de l’exécution
+- Réduire la charge cognitive du suivi
+- Alimenter les candidatures de manière contrôlée
+
+---
+
+## 🧩 Entité : `PisteCandidature`
+
+### Champs principaux
+
+| Champ | Type | Contraintes | Description |
+|-----|-----|------------|------------|
+| `id` | UUID | PK | Identifiant |
+| `periode_id` | UUID | FK | Période associée |
+| `entreprise` | String | NOT NULL | Nom de l’entreprise |
+| `poste_cible` | String | NULL | Poste envisagé |
+| `source` | String | NULL | LinkedIn, site, contact |
+| `contact` | String | NULL | Nom / email |
+| `url_annonce` | String | NULL | Lien annonce |
+| `commentaires` | Text | NULL | Notes |
+| `etat` | Enum `EtatPiste` | NOT NULL | État de la piste |
+| `candidature_id` | UUID | NULL | FK vers candidature |
+| `created_at` | DateTime | | |
+| `updated_at` | DateTime | | |
+
+---
+
+## 📍 Enumération : `EtatPiste`
+
+```text
+A_ETUDIER
+A_CONTACTER
+EN_PREPARATION
+ABANDONNEE
+TRANSFORMEE
+```
+
+---
+
+## 🔄 Transformation en candidature
+
+- Lorsqu’une piste est transformée :
+  - `etat` → `TRANSFORMEE`
+  - une `Candidature` est créée
+  - `candidature_id` est renseigné
+
+---
+
+## 🚀 Évolutions possibles
+
+- Priorisation des pistes
+- Rappels / relances
+- Scoring automatique
+- Historique des actions
+
+---
+
+🎯 **Objectif du modèle**  
+Créer un espace de travail en amont des candidatures, orienté exploration et décision.
+
+
+Cette note décrit les **relations entre les principaux modèles de données** du projet de suivi de candidatures.
+
+Elle sert de **référence d’architecture métier**, indépendante des choix techniques  
+(SGBD, ORM, framework, UI).
+
+---
+
+## 🎯 Objectifs du schéma
+
+- Clarifier les responsabilités de chaque entité
+- Définir les relations cardinales
+- Formaliser les dépendances métier
+- Garantir la cohérence du modèle à long terme
+- Faciliter l’implémentation MVP puis les extensions futures
+
+---
+
+## 🧩 Entités principales
+
+- `PeriodeRecherche` — conteneur métier principal
+- `Candidature` — fait métier central
+- `PisteCandidature` — opportunité en amont
+- `Statut` — référentiel d’avancement
+- `DocumentCandidature` — pièces associées
+
+---
+
+## 🗺️ Schéma relationnel (vue métier)
+
+```mermaid
+erDiagram
+    PeriodeRecherche ||--o{ Candidature : "contient"
+    PeriodeRecherche ||--o{ PisteCandidature : "regroupe"
+
+    PisteCandidature }o--|| Candidature : "peut créer"
+
+    Statut ||--o{ Candidature : "qualifie"
+    Candidature ||--o{ DocumentCandidature : "possède"
+```
+
+---
+
+## 🔗 Relations principales (vue détaillée)
+
+### `PeriodeRecherche` → `Candidature`
+- **1 période** possède **N candidatures**
+- Une candidature appartient **obligatoirement** à une période
+
+```
+PeriodeRecherche (1) ──── (N) Candidature
+```
+
+**Rôle métier :**
+- structuration temporelle des recherches
+- analyse statistique par période
+- archivage clair des candidatures passées
+
+---
+
+### `PeriodeRecherche` → `PisteCandidature`
+- **1 période** possède **N pistes**
+- Une piste appartient à **une seule période**
+
+```
+PeriodeRecherche (1) ──── (N) PisteCandidature
+```
+
+**Rôle métier :**
+- séparation exploration / exécution
+- vision globale des opportunités identifiées
+
+---
+
+### `PisteCandidature` → `Candidature` (optionnelle)
+- Une piste peut être :
+  - abandonnée
+  - ou transformée en candidature
+- La relation est **optionnelle et unidirectionnelle**
+
+```
+PisteCandidature (0..1) ──── (1) Candidature
+```
+
+**Implications :**
+- toute candidature n’est pas issue d’une piste
+- une piste transformée référence explicitement sa candidature
+- traçabilité du passage de l’intention à l’action
+
+---
+
+### `Candidature` → `Statut`
+- Chaque candidature possède **un statut principal actif**
+- Le statut est référencé via une entité dédiée
+
+```
+Statut (1) ──── (N) Candidature
+```
+
+**Objectifs :**
+- découplage du workflow métier
+- extensibilité des statuts sans refonte
+- cohérence inter-candidatures
+
+---
+
+### `Candidature` → `DocumentCandidature`
+- Une candidature peut posséder **plusieurs documents**
+- Un document appartient à **une seule candidature**
+
+```
+Candidature (1) ──── (N) DocumentCandidature
+```
+
+**Usage :**
+- traçabilité du travail réalisé
+- suivi qualitatif des candidatures
+- support aux analyses futures
+
+---
+
+## 🧠 Principes d’architecture métier
+
+- La **période de recherche** est le **pivot conceptuel** du modèle
+- Les **pistes** sont des opportunités non engageantes, en amont
+- Les **candidatures** sont des faits historiques persistants
+- Les référentiels (`Statut`, enums) sont :
+  - indépendants
+  - configurables
+  - évolutifs
+
+---
+
+## 🚀 Évolutions prévues (hors MVP)
+
+- Historisation des changements de statut
+- Statistiques transverses multi-périodes
+- Paramétrage utilisateur
+- Multi-utilisateur / multi-profils
+- Historique détaillé des transformations piste → candidature
+
+---
+
+🎯 **Rôle de cette note**  
+Servir de **socle conceptuel central** pour toutes les décisions de modélisation,  
+et de point d’entrée unique pour comprendre l’architecture métier du projet.

@@ -1,0 +1,97 @@
+{% extends "candidatures/base.html" %}
+
+{% block title %}{{ piste.entreprise }} - Détail de la piste{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-compass"></i> Détail de la piste</h1>
+    <div class="btn-group" role="group">
+        <a href="{% url 'candidatures:piste-update' piste.pk %}" class="btn btn-outline-secondary">
+            <i class="bi bi-pencil"></i> Modifier
+        </a>
+        <a href="{% url 'candidatures:piste-delete' piste.pk %}" class="btn btn-outline-danger">
+            <i class="bi bi-trash"></i> Supprimer
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">{{ piste.entreprise }}</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Poste ciblé:</strong> {{ piste.poste_cible|default:"Non spécifié" }}</p>
+                        <p><strong>Source:</strong> {{ piste.source|default:"Non spécifiée" }}</p>
+                        <p><strong>Contact:</strong> {{ piste.contact|default:"Non spécifié" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>État:</strong> 
+                            <span class="badge bg-info">{{ piste.get_etat_display }}</span>
+                        </p>
+                        <p><strong>Période de recherche:</strong> 
+                            <a href="{% url 'candidatures:periode-detail' piste.periode_recherche.pk %}">
+                                {{ piste.periode_recherche.nom }}
+                            </a>
+                        </p>
+                        <p><strong>Créée le:</strong> {{ piste.created_at|date:"d/m/Y H:i" }}</p>
+                    </div>
+                </div>
+                
+                {% if piste.url_annonce %}
+                    <div class="mt-3">
+                        <p><strong>URL de l'annonce:</strong></p>
+                        <a href="{{ piste.url_annonce }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-link-45deg"></i> Voir l'annonce
+                        </a>
+                    </div>
+                {% endif %}
+                
+                {% if piste.commentaires %}
+                    <div class="mt-3">
+                        <p><strong>Commentaires:</strong></p>
+                        <div class="border rounded p-3 bg-light">
+                            {{ piste.commentaires|linebreaks }}
+                        </div>
+                    </div>
+                {% endif %}
+                
+                {% if piste.candidature %}
+                    <div class="mt-3">
+                        <p><strong>Candidature associée:</strong></p>
+                        <a href="{% url 'candidatures:candidature-detail' piste.candidature.pk %}" class="btn btn-success">
+                            <i class="bi bi-file-text"></i> Voir la candidature
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Actions rapides</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="{% url 'candidatures:piste-update' piste.pk %}" class="btn btn-primary">
+                        <i class="bi bi-pencil"></i> Modifier la piste
+                    </a>
+                    {% if not piste.candidature %}
+                        <a href="{% url 'candidatures:candidature-create' %}?periode={{ piste.periode_recherche.pk }}&entreprise={{ piste.entreprise }}" class="btn btn-success">
+                            <i class="bi bi-plus-circle"></i> Transformer en candidature
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'candidatures:piste-list' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Retour à la liste
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

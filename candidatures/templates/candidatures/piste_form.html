@@ -1,0 +1,190 @@
+{% extends "candidatures/base.html" %}
+
+{% block title %}
+    {% if object %}
+        Modifier la piste
+    {% else %}
+        Nouvelle piste
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">
+                    {% if object %}
+                        <i class="bi bi-pencil"></i> Modifier la piste
+                    {% else %}
+                        <i class="bi bi-plus-circle"></i> Nouvelle piste de candidature
+                    {% endif %}
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.entreprise.id_for_label }}" class="form-label">
+                                    {{ form.entreprise.label }} *
+                                </label>
+                                {{ form.entreprise }}
+                                {% if form.entreprise.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.entreprise.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.poste_cible.id_for_label }}" class="form-label">
+                                    {{ form.poste_cible.label }}
+                                </label>
+                                {{ form.poste_cible }}
+                                {% if form.poste_cible.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.poste_cible.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.periode_recherche.id_for_label }}" class="form-label">
+                                    {{ form.periode_recherche.label }} *
+                                </label>
+                                {{ form.periode_recherche }}
+                                {% if form.periode_recherche.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.periode_recherche.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.etat.id_for_label }}" class="form-label">
+                                    {{ form.etat.label }}
+                                </label>
+                                {{ form.etat }}
+                                {% if form.etat.errors %}
+                                    <div class="text-danger">
+                                        {% for error in form.etat.errors %}
+                                            <small>{{ error }}</small>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.source.id_for_label }}" class="form-label">
+                            {{ form.source.label }}
+                        </label>
+                        {{ form.source }}
+                        {% if form.source.errors %}
+                            <div class="text-danger">
+                                {% for error in form.source.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.contact.id_for_label }}" class="form-label">
+                            {{ form.contact.label }}
+                        </label>
+                        {{ form.contact }}
+                        {% if form.contact.errors %}
+                            <div class="text-danger">
+                                {% for error in form.contact.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.url_annonce.id_for_label }}" class="form-label">
+                            {{ form.url_annonce.label }}
+                        </label>
+                        {{ form.url_annonce }}
+                        {% if form.url_annonce.errors %}
+                            <div class="text-danger">
+                                {% for error in form.url_annonce.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.commentaires.id_for_label }}" class="form-label">
+                            {{ form.commentaires.label }}
+                        </label>
+                        {{ form.commentaires }}
+                        {% if form.commentaires.errors %}
+                            <div class="text-danger">
+                                {% for error in form.commentaires.errors %}
+                                    <small>{{ error }}</small>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'candidatures:piste-list' %}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Retour à la liste
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle"></i> 
+                            {% if object %}
+                                Mettre à jour
+                            {% else %}
+                                Créer la piste
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add form-control class to all form fields
+    const formFields = document.querySelectorAll('input, select, textarea');
+    formFields.forEach(field => {
+        if (!field.classList.contains('form-control')) {
+            field.classList.add('form-control');
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,191 @@
+{% extends 'candidatures/base.html' %}
+
+{% block title %}{{ candidature }} - Job Application Tracker{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>
+                <i class="bi bi-file-text"></i> {{ candidature }}
+            </h1>
+            <div>
+                <a href="{% url 'candidatures:candidature-update' candidature.pk %}" class="btn btn-primary">
+                    <i class="bi bi-pencil"></i> Modifier
+                </a>
+                <a href="{% url 'candidatures:candidature-delete' candidature.pk %}" class="btn btn-danger">
+                    <i class="bi bi-trash"></i> Supprimer
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-info-circle"></i> Informations générales
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Entreprise :</strong> {{ candidature.entreprise }}</p>
+                        <p><strong>Poste :</strong> {{ candidature.poste }}</p>
+                        <p><strong>Type de contrat :</strong> {{ candidature.get_type_contrat_display }}</p>
+                        <p><strong>Lieu :</strong> {{ candidature.lieu|default:"Non spécifié" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Statut :</strong> <span class="badge bg-primary">{{ candidature.statut }}</span></p>
+                        <p><strong>Date de candidature :</strong> {{ candidature.date_candidature }}</p>
+                        <p><strong>Date de relance :</strong> {{ candidature.date_relance|default:"Non planifiée" }}</p>
+                        <p><strong>Télétravail :</strong> 
+                            {% if candidature.remote %}
+                                <span class="badge bg-success">Oui</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Non</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                {% if candidature.salaire %}
+                    <p><strong>Salaire :</strong> {{ candidature.salaire }}</p>
+                {% endif %}
+
+                {% if candidature.description_poste %}
+                    <div class="mt-3">
+                        <h6>Description du poste</h6>
+                        <p class="text-muted">{{ candidature.description_poste|linebreaks }}</p>
+                    </div>
+                {% endif %}
+
+                {% if candidature.notes %}
+                    <div class="mt-3">
+                        <h6>Notes</h6>
+                        <div class="alert alert-light">
+                            {{ candidature.notes|linebreaks }}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if documents %}
+            <div class="card mt-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-file-earmark"></i> Documents ({{ documents.count }})
+                    </h5>
+                    <a href="{% url 'candidatures:document-create' %}?candidature={{ candidature.pk }}" class="btn btn-primary btn-sm">
+                        <i class="bi bi-plus-circle"></i> Ajouter un document
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        {% for document in documents %}
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">{{ document.nom_fichier }}</h6>
+                                    <p class="mb-1">
+                                        <span class="badge bg-secondary">{{ document.get_type_document_display }}</span>
+                                        <small class="text-muted ms-2">Ajouté le {{ document.date_ajout|date:"d/m/Y H:i" }}</small>
+                                    </p>
+                                    {% if document.description %}
+                                        <p class="text-muted small mb-0">{{ document.description }}</p>
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <a href="{{ document.fichier.url }}" class="btn btn-sm btn-outline-primary" target="_blank">
+                                        <i class="bi bi-download"></i> Télécharger
+                                    </a>
+                                    <a href="{% url 'candidatures:document-delete' document.pk %}" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="card mt-4">
+                <div class="card-body text-center">
+                    <i class="bi bi-file-earmark fs-1 text-muted"></i>
+                    <p class="mt-2">Aucun document associé</p>
+                    <a href="{% url 'candidatures:document-create' %}?candidature={{ candidature.pk }}" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Ajouter un document
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-calendar3"></i> Période de recherche
+                </h6>
+            </div>
+            <div class="card-body">
+                <p><strong>{{ candidature.periode_recherche.nom }}</strong></p>
+                <p class="text-muted">
+                    {{ candidature.periode_recherche.date_debut }} - 
+                    {{ candidature.periode_recherche.date_fin|default:"en cours" }}
+                </p>
+                {% if candidature.periode_recherche.description %}
+                    <p class="small">{{ candidature.periode_recherche.description }}</p>
+                {% endif %}
+                <a href="{% url 'candidatures:periode-detail' candidature.periode_recherche.pk %}" class="btn btn-sm btn-outline-primary">
+                    Voir la période
+                </a>
+            </div>
+        </div>
+
+        {% if candidature.piste_candidature %}
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0">
+                        <i class="bi bi-compass"></i> Piste associée
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <p><strong>{{ candidature.piste_candidature.source }}</strong></p>
+                    <p class="text-muted">État : {{ candidature.piste_candidature.get_etat_display }}</p>
+                    {% if candidature.piste_candidature.url %}
+                        <a href="{{ candidature.piste_candidature.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-link"></i> Voir l'offre
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'candidatures:piste-detail' candidature.piste_candidature.pk %}" class="btn btn-sm btn-outline-secondary ms-2">
+                        Voir la piste
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h6 class="mb-0">
+                    <i class="bi bi-clock-history"></i> Historique
+                </h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled small">
+                    <li class="mb-2">
+                        <i class="bi bi-plus-circle text-success"></i>
+                        Créée le {{ candidature.created_at|date:"d/m/Y H:i" }}
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-pencil text-info"></i>
+                        Modifiée le {{ candidature.updated_at|date:"d/m/Y H:i" }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,257 @@
+{% extends 'candidatures/base.html' %}
+{% load pagination_tags %}
+
+{% block title %}Candidatures - Job Application Tracker{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>
+                <i class="bi bi-file-text"></i> Candidatures
+            </h1>
+            <a href="{% url 'candidatures:candidature-create' %}" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Nouvelle candidature
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Search and Filter Form -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                {{ search_form.search.label_tag }}
+                {{ search_form.search }}
+            </div>
+            <div class="col-md-2">
+                {{ search_form.statut.label_tag }}
+                {{ search_form.statut }}
+            </div>
+            <div class="col-md-2">
+                {{ search_form.periode_recherche.label_tag }}
+                {{ search_form.periode_recherche }}
+            </div>
+            <div class="col-md-2">
+                {{ search_form.type_contrat.label_tag }}
+                {{ search_form.type_contrat }}
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-outline-primary me-2">
+                    <i class="bi bi-search"></i> Rechercher
+                </button>
+                <a href="{% url 'candidatures:candidature-list' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-x-circle"></i> Effacer
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Results -->
+<div class="card">
+    <div class="card-body">
+        {% if candidatures %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                {% if current_sort == 'entreprise' %}
+                                    <a href="?{% querystring_with_sort '-entreprise' %}" class="text-decoration-none">
+                                        Entreprise <i class="bi bi-caret-up-fill"></i>
+                                    </a>
+                                {% elif current_sort == '-entreprise' %}
+                                    <a href="?{% querystring_with_sort 'entreprise' %}" class="text-decoration-none">
+                                        Entreprise <i class="bi bi-caret-down-fill"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="?{% querystring_with_sort 'entreprise' %}" class="text-decoration-none">
+                                        Entreprise <i class="bi bi-caret-up text-muted"></i>
+                                    </a>
+                                {% endif %}
+                            </th>
+                            <th>
+                                {% if current_sort == 'poste' %}
+                                    <a href="?{% querystring_with_sort '-poste' %}" class="text-decoration-none">
+                                        Poste <i class="bi bi-caret-up-fill"></i>
+                                    </a>
+                                {% elif current_sort == '-poste' %}
+                                    <a href="?{% querystring_with_sort 'poste' %}" class="text-decoration-none">
+                                        Poste <i class="bi bi-caret-down-fill"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="?{% querystring_with_sort 'poste' %}" class="text-decoration-none">
+                                        Poste <i class="bi bi-caret-up text-muted"></i>
+                                    </a>
+                                {% endif %}
+                            </th>
+                            <th>Type de contrat</th>
+                            <th>
+                                {% if current_sort == 'statut' %}
+                                    <a href="?{% querystring_with_sort '-statut' %}" class="text-decoration-none">
+                                        Statut <i class="bi bi-caret-up-fill"></i>
+                                    </a>
+                                {% elif current_sort == '-statut' %}
+                                    <a href="?{% querystring_with_sort 'statut' %}" class="text-decoration-none">
+                                        Statut <i class="bi bi-caret-down-fill"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="?{% querystring_with_sort 'statut' %}" class="text-decoration-none">
+                                        Statut <i class="bi bi-caret-up text-muted"></i>
+                                    </a>
+                                {% endif %}
+                            </th>
+                            <th>
+                                {% if current_sort == 'date_candidature' %}
+                                    <a href="?{% querystring_with_sort '-date_candidature' %}" class="text-decoration-none">
+                                        Date de candidature <i class="bi bi-caret-up-fill"></i>
+                                    </a>
+                                {% elif current_sort == '-date_candidature' %}
+                                    <a href="?{% querystring_with_sort 'date_candidature' %}" class="text-decoration-none">
+                                        Date de candidature <i class="bi bi-caret-down-fill"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="?{% querystring_with_sort '-date_candidature' %}" class="text-decoration-none">
+                                        Date de candidature <i class="bi bi-caret-up text-muted"></i>
+                                    </a>
+                                {% endif %}
+                            </th>
+                            <th>
+                                {% if current_sort == 'priorite' %}
+                                    <a href="?{% querystring_with_sort '-priorite' %}" class="text-decoration-none">
+                                        Priorité <i class="bi bi-caret-up-fill"></i>
+                                    </a>
+                                {% elif current_sort == '-priorite' %}
+                                    <a href="?{% querystring_with_sort 'priorite' %}" class="text-decoration-none">
+                                        Priorité <i class="bi bi-caret-down-fill"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="?{% querystring_with_sort 'priorite' %}" class="text-decoration-none">
+                                        Priorité <i class="bi bi-caret-up text-muted"></i>
+                                    </a>
+                                {% endif %}
+                            </th>
+                            <th>Période</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for candidature in candidatures %}
+                        <tr>
+                            <td>
+                                <strong>{{ candidature.entreprise }}</strong>
+                                {% if candidature.remote %}
+                                    <span class="badge bg-info ms-1">Remote</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ candidature.poste }}</td>
+                            <td>
+                                <span class="badge bg-light text-dark">{{ candidature.get_type_contrat_display }}</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-primary">{{ candidature.statut }}</span>
+                            </td>
+                            <td>{{ candidature.date_candidature }}</td>
+                            <td>
+                                {% if candidature.priorite %}
+                                    {% if candidature.priorite == 'ELEVEE' %}
+                                        <span class="badge bg-danger">{{ candidature.get_priorite_display }}</span>
+                                    {% elif candidature.priorite == 'NORMALE' %}
+                                        <span class="badge bg-warning">{{ candidature.get_priorite_display }}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ candidature.get_priorite_display }}</span>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <small class="text-muted">{{ candidature.periode_recherche.nom }}</small>
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{% url 'candidatures:candidature-detail' candidature.pk %}" 
+                                       class="btn btn-sm btn-outline-primary" title="Voir">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="{% url 'candidatures:candidature-update' candidature.pk %}" 
+                                       class="btn btn-sm btn-outline-secondary" title="Modifier">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a href="{% url 'candidatures:candidature-delete' candidature.pk %}" 
+                                       class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            {% if is_paginated %}
+                <nav aria-label="Pagination des candidatures">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page=1{% if clean_querystring %}&{{ clean_querystring }}{% endif %}">
+                                    <i class="bi bi-chevron-double-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if clean_querystring %}&{{ clean_querystring }}{% endif %}">
+                                    <i class="bi bi-chevron-left"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ num }}</span>
+                                </li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ num }}{% if clean_querystring %}&{{ clean_querystring }}{% endif %}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if clean_querystring %}&{{ clean_querystring }}{% endif %}">
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if clean_querystring %}&{{ clean_querystring }}{% endif %}">
+                                    <i class="bi bi-chevron-double-right"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-inbox fs-1 text-muted"></i>
+                <h5 class="mt-3">Aucune candidature trouvée</h5>
+                <p class="text-muted">
+                    {% if request.GET %}
+                        Essayez de modifier vos critères de recherche.
+                    {% else %}
+                        Commencez par créer votre première candidature.
+                    {% endif %}
+                </p>
+                <a href="{% url 'candidatures:candidature-create' %}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Créer une candidature
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

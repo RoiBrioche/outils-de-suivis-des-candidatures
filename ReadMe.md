@@ -1,121 +1,171 @@
-# Suivi des candidatures (MVP)
+# Job Application Tracker (MVP)
 
-## 📌 Présentation
+## 📌 Overview
 
-**Suivi des candidatures** est une application Django MVP pour gérer et suivre vos candidatures professionnelles.  
-Elle permet de :  
-- Ajouter, modifier et supprimer des candidatures (CRUD)  
-- Consulter et filtrer les candidatures sur une interface principale  
-- Gérer les périodes de candidature  
-- Visualiser des statistiques simples  
+**Job Application Tracker** is a Django MVP application for managing and tracking job applications.  
+It allows you to:  
+- Add, modify, and delete job applications (CRUD)  
+- View and filter applications on a main interface  
+- Manage application periods  
+- View simple statistics  
 
-Le projet utilise **Windsurf** pour faciliter le développement assisté par IA et inclut la documentation **Obsidian** pour fournir le contexte nécessaire à l’IA.
-
----
-
-## 🛠️ Technologies
-
-- **Backend** : Python + Django  
-- **Base de données** : SQLite (MVP)  
-- **Outils IA / Dev** : Windsurf  
-- **Documentation** : Obsidian (Markdown)
+The project follows domain-driven design principles with strict server-side validation and business rule enforcement.
 
 ---
 
-## 📁 Arborescence du projet
+## 🛠️ Technology Stack
+
+- **Backend**: Python + Django 5.2+  
+- **Database**: SQLite (MVP)  
+- **Architecture**: Domain-driven Django apps  
+- **Validation**: Django ModelForms with business rules  
+- **UI**: Bootstrap 5 for minimal styling
+
+---
+
+##  Project Structure
 
 ```
-suivi-candidatures-mvp/
+job-tracker/
 │
 ├─ README.md
 ├─ LICENSE
 ├─ .gitignore
 ├─ requirements.txt
-├─ pyproject.toml
-├─ obsidian-docs/           # documentation projet pour IA
-│   ├─ 00-introduction.md
-│   ├─ 01-schema-donnees.md
-│   ├─ 02-architecture-technique.md
-│   └─ 03-validation-erreurs.md
-├─ src/
-│   ├─ manage.py
-│   ├─ config/              # settings, urls
-│   └─ app/                 # apps Django
-│       ├─ models.py
-│       ├─ views.py
-│       ├─ serializers.py
-│       └─ ...
-├─ tests/
-└─ data/                    # données de test
+├─ manage.py
+├─ obsidian-AI-docs/           # project documentation for AI
+│   ├─ 00-context.md
+│   ├─ 01-business-model.md
+│   ├─ 02-architecture.md
+│   ├─ 03-validation-errors.md
+│   └─ 04-ui-scope.md
+├─ job_tracker/                 # Django project configuration
+│   ├─ __init__.py
+│   ├─ settings.py
+│   ├─ urls.py
+│   ├─ wsgi.py
+│   └─ asgi.py
+├─ candidatures/                # Django app for job applications
+│   ├─ __init__.py
+│   ├─ admin.py
+│   ├─ apps.py
+│   ├─ models.py
+│   ├─ views.py
+│   ├─ forms.py
+│   ├─ urls.py
+│   └─ templates/candidatures/
+│       ├─ base.html
+│       ├─ candidature_list.html
+│       ├─ candidature_form.html
+│       ├─ candidature_detail.html
+│       ├─ candidature_confirm_delete.html
+│       ├─ periode_list.html
+│       ├─ periode_form.html
+│       ├─ periode_confirm_delete.html
+│       ├─ piste_list.html
+│       ├─ piste_form.html
+│       └─ piste_confirm_delete.html
+├─ venv/                       # virtual environment
+└─ db.sqlite3                  # SQLite database (created after migrate)
 ```
 
 ---
 
 ## 🚀 Installation
 
-1. **Cloner le dépôt**  
+1. **Clone the repository**  
 ```bash
-git clone https://github.com/<votre-utilisateur>/suivi-candidatures-mvp.git
-cd suivi-candidatures-mvp
+git clone <repository-url>
+cd outils-de-suivis-des-candidatures
 ```
 
-2. **Créer un environnement virtuel**  
+2. **Create and activate virtual environment**  
 ```bash
 python -m venv venv
-source venv/bin/activate   # Linux / macOS
 venv\Scripts\activate      # Windows
+# source venv/bin/activate   # Linux / macOS
 ```
 
-3. **Installer les dépendances**  
+3. **Install dependencies**  
 ```bash
 pip install -r requirements.txt
 ```
 
-4. **Initialiser la base de données**  
+4. **Initialize the database**  
 ```bash
 python manage.py migrate
 ```
 
-5. **Lancer le serveur de développement**  
+5. **Create superuser (optional, for admin access)**  
+```bash
+python manage.py createsuperuser
+```
+
+6. **Start the development server**  
 ```bash
 python manage.py runserver
 ```
 
----
-
-## 🧠 Utilisation avec Windsurf
-
-Windsurf permet d’utiliser l’IA pour :  
-- Générer du code basé sur la documentation Obsidian  
-- Vérifier la cohérence du code avec l’architecture définie  
-- Automatiser certaines tâches répétitives (CRUD, validation, tests)  
-
-💡 **Conseil** : placez toutes les notes pertinentes dans `obsidian-docs/` pour que l’IA puisse les lire facilement.
+7. **Access the application**  
+- Main application: http://127.0.0.1:8000/
+- Admin interface: http://127.0.0.1:8000/admin/
 
 ---
 
-## 📄 Documentation Obsidian intégrée
+## Features
 
-Le dossier `obsidian-docs/` contient :  
-- **00-introduction.md** : contexte du projet et objectifs du MVP  
-- **01-schema-donnees.md** : modèles métier et relations  
-- **02-architecture-technique.md** : choix techniques et stack  
-- **03-validation-erreurs.md** : règles de validation et gestion des erreurs  
+### Core Functionality
+- **Job Application Management**: Full CRUD operations for job applications
+- **Period Organization**: Group applications by search periods
+- **Lead Tracking**: Optional source/lead tracking for applications
+- **Search & Filter**: Search by company/position, filter by status and period
+- **Status Management**: Constrained status transitions (En attente, En cours, Entretien planifié, Refusé, Accepté, Retiré)
 
-Ces notes servent à **fournir un contexte complet au modèle IA**, garantissant que le code généré respecte les décisions de conception et les contraintes métier.
+### Business Rules
+- Only one active search period at a time
+- Application dates must belong to their period
+- Required fields enforced server-side
+- Cascade delete: deleting a period removes its applications
+
+### Admin Interface
+- Full Django admin integration for all models
+- Superuser access for data management
+- Debug-friendly interface
 
 ---
 
-## ✅ Bonnes pratiques
+## Architecture
 
-- Commits fréquents et explicites  
-- Tests unitaires et fonctionnels pour chaque fonctionnalité  
-- Documentation continue dans `obsidian-docs/`  
-- Maintien d’une TODO list pour le MVP  
-- Données de test pour valider rapidement les fonctionnalités  
+### Domain Models
+- **PeriodeRecherche**: Job search periods with one-active constraint
+- **Candidature**: Individual job applications with status tracking
+- **PisteCandidature**: Optional lead/source tracking
+
+### Validation Layer
+- Django ModelForms with custom clean() methods
+- Business rule enforcement at model and form level
+- Structured ValidationError responses
+- No silent failures
+
+### Views & URLs
+- Class-based views for all CRUD operations
+- RESTful URL patterns
+- Pagination support
+- Search functionality
 
 ---
 
-## ⚖️ Licence
+## Documentation
 
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+The `obsidian-AI-docs/` folder contains authoritative project documentation:
+- **00-context.md**: Project scope and constraints
+- **01-business-model.md**: Domain entities and relationships
+- **02-architecture.md**: Technical architecture and patterns
+- **03-validation-errors.md**: Validation strategy and error handling
+- **04-ui-scope.md**: UI requirements and constraints
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
