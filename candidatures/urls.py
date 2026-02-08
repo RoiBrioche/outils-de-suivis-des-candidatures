@@ -37,4 +37,9 @@ urlpatterns = [
     # Document URLs
     path('documents/create/', views.DocumentCandidatureCreateView.as_view(), name='document-create'),
     path('documents/<uuid:pk>/delete/', views.DocumentCandidatureDeleteView.as_view(), name='document-delete'),
+    
+    # AJAX URLs
+    path('contacts/add-ajax/', views.contact_add_ajax, name='contact-add-ajax'),
+    path('contacts/remove-from-piste/', views.contact_remove_from_piste, name='contact-remove-from-piste'),
+    path('candidatures/<uuid:pk>/update-field/', views.candidature_update_field, name='candidature-update-field'),
 ]

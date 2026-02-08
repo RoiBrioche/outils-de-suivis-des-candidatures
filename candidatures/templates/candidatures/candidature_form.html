@@ -23,7 +23,7 @@
     <div class="col-lg-8">
         <div class="card">
             <div class="card-body">
-                <form method="post" novalidate>
+                <form method="post" enctype="multipart/form-data" novalidate>
                     {% csrf_token %}
                     
                     {% if form.non_field_errors %}
@@ -212,78 +212,137 @@
 
                     <!-- Documents Section -->
                     <hr>
-                    <h5 class="mb-3">Documents</h5>
                     <div class="mb-3">
-                        <div class="text-muted small mb-3">
-                            Ajoutez des références à vos documents (CV, lettre de motivation, etc.).
-                        </div>
-                        
-                        {{ document_formset.management_form }}
-                        
-                        <div id="documents-container">
-                            {% for doc_form in document_formset %}
-                                <div class="document-item border rounded p-3 mb-3">
-                                    {{ doc_form.id }}
-                                    {{ doc_form.DELETE }}
-
-                                    <div class="row">
-                                        <div class="col-md-4 mb-3">
-                                            {{ doc_form.type_document.label_tag }}
-                                            {{ doc_form.type_document }}
-                                        </div>
-                                        <div class="col-md-8 mb-3">
-                                            {{ doc_form.chemin_fichier.label_tag }}
-                                            {{ doc_form.chemin_fichier }}
-                                        </div>
-                                    </div>
-
-                                    <div class="mb-3">
-                                        {{ doc_form.commentaire.label_tag }}
-                                        {{ doc_form.commentaire }}
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
-
-                        
-                        <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addDocument()">
-                            <i class="bi bi-plus-circle"></i> Ajouter un document
+                        <button class="btn btn-outline-primary w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDocumentForm" aria-expanded="false" aria-controls="collapseDocumentForm">
+                            <i class="bi bi-paperclip"></i> Joindre un document (Optionnel)
                         </button>
                         
-                        <!-- Empty form template for dynamic addition -->
-                        <template id="empty-document-form">
-                            <div class="document-item border rounded p-3 mb-3">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h6 class="mb-0">Document</h6>
-                                    <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeDocument(this)">
-                                        <i class="bi bi-trash"></i> Supprimer
-                                    </button>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label class="form-label">Type de document</label>
-                                        <select class="form-control" name="{{ document_formset.empty_form.type_document.html_name }}">
-                                            <option value="">-- Choisir --</option>
-                                            <option value="CV">CV</option>
-                                            <option value="LETTRE_MOTIVATION">Lettre de motivation</option>
-                                            <option value="PORTFOLIO">Portfolio</option>
-                                            <option value="TEST_TECHNIQUE">Test technique</option>
-                                            <option value="AUTRE">Autre</option>
-                                        </select>
+                        <div class="collapse" id="collapseDocumentForm">
+                            <div class="card mt-3">
+                                <div class="card-body">
+                                    {{ document_formset.management_form }}
+                                    
+                                    {% if document_formset.non_form_errors %}
+                                        <div class="alert alert-danger">
+                                            {% for error in document_formset.non_form_errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+
+                                    <div id="documents-container">
+                                        {% for form in document_formset %}
+                                            <div class="document-row border rounded p-3 mb-3">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h6 class="mb-0">
+                                                        Document {{ forloop.counter }}
+                                                        {% if form.instance.pk %}
+                                                            <small class="text-muted">({{ form.instance.nom_fichier|default:form.instance.type_document }})</small>
+                                                        {% endif %}
+                                                    </h6>
+                                                    {% if form.instance.pk or forloop.counter > 1 %}
+                                                        <button type="button" class="btn btn-outline-danger btn-sm remove-document">
+                                                            <i class="bi bi-trash"></i> Supprimer
+                                                        </button>
+                                                    {% endif %}
+                                                </div>
+                                                
+                                                {% if form.non_field_errors %}
+                                                    <div class="alert alert-danger">
+                                                        {% for error in form.non_field_errors %}
+                                                            {{ error }}
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+
+                                                {% for hidden in form.hidden_fields %}
+                                                    {% if hidden.name == 'DELETE' %}
+                                                        <div style="display: none;">{{ hidden }}</div>
+                                                    {% else %}
+                                                        {{ hidden }}
+                                                    {% endif %}
+                                                {% endfor %}
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="mb-3">
+                                                            <label for="{{ form.type_document.id_for_label }}" class="form-label">
+                                                                {{ form.type_document.label }}
+                                                            </label>
+                                                            {{ form.type_document }}
+                                                            {% if form.type_document.errors %}
+                                                                <div class="text-danger">
+                                                                    {% for error in form.type_document.errors %}
+                                                                        <small>{{ error }}</small>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="mb-3">
+                                                            <label for="{{ form.nom_fichier.id_for_label }}" class="form-label">
+                                                                {{ form.nom_fichier.label }}
+                                                            </label>
+                                                            {{ form.nom_fichier }}
+                                                            {% if form.nom_fichier.errors %}
+                                                                <div class="text-danger">
+                                                                    {% for error in form.nom_fichier.errors %}
+                                                                        <small>{{ error }}</small>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="mb-3">
+                                                            <label for="{{ form.fichier.id_for_label }}" class="form-label">
+                                                                {{ form.fichier.label }}
+                                                            </label>
+                                                            {{ form.fichier }}
+                                                            {% if form.fichier.errors %}
+                                                                <div class="text-danger">
+                                                                    {% for error in form.fichier.errors %}
+                                                                        <small>{{ error }}</small>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="mb-3">
+                                                            <label for="{{ form.commentaire.id_for_label }}" class="form-label">
+                                                                {{ form.commentaire.label }}
+                                                            </label>
+                                                            {{ form.commentaire }}
+                                                            {% if form.commentaire.errors %}
+                                                                <div class="text-danger">
+                                                                    {% for error in form.commentaire.errors %}
+                                                                        <small>{{ error }}</small>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
                                     </div>
-                                    <div class="col-md-8 mb-3">
-                                        <label class="form-label">Chemin du fichier</label>
-                                        <input type="text" class="form-control" name="{{ document_formset.empty_form.chemin_fichier.html_name }}" placeholder="C:\Users\Nom\Documents\mon_cv.pdf">
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <button type="button" class="btn btn-outline-primary" id="add-document-btn">
+                                            <i class="bi bi-plus-circle"></i> Ajouter un autre document
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target="#collapseDocumentForm">
+                                            <i class="bi bi-x-circle"></i> Fermer
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Commentaire (optionnel)</label>
-                                    <textarea class="form-control" name="{{ document_formset.empty_form.commentaire.html_name }}" rows="2" placeholder="Notes sur ce document..."></textarea>
-                                </div>
-                                <input type="hidden" name="{{ document_formset.empty_form.id.html_name }}" value="">
-                                <input type="hidden" name="{{ document_formset.empty_form.DELETE.html_name }}" value="">
                             </div>
-                        </template>
+                        </div>
                     </div>
 
                     <div class="d-flex justify-content-between">
@@ -350,56 +409,141 @@ document.addEventListener('DOMContentLoaded', function() {
             field.classList.add('form-control');
         }
     });
-});
 
-let documentCount = 0;
-
-function addDocument() {
-    const container = document.getElementById('documents-container');
-    const template = document.getElementById('empty-document-form');
-    const formsetPrefix = '{{ document_formset.prefix }}';
+    // Gestion de l'ajout dynamique de documents
+    const addDocumentBtn = document.getElementById('add-document-btn');
+    const documentsContainer = document.getElementById('documents-container');
     
-    // Clone the template
-    const clone = template.content.cloneNode(true);
-    
-    // Update form names and IDs with current count
-    const totalFormsInput = document.querySelector(`input[name="${formsetPrefix}-TOTAL_FORMS"]`);
-    const currentCount = parseInt(totalFormsInput.value);
-    
-    // Replace __prefix__ with actual count
-    const allInputs = clone.querySelectorAll('input, textarea');
-    allInputs.forEach(input => {
-        input.name = input.name.replace('__prefix__', currentCount);
-        if (input.id) {
-            input.id = input.id.replace('__prefix__', currentCount);
-        }
-    });
-    
-    // Add to container
-    container.appendChild(clone);
-    
-    // Update total forms count
-    totalFormsInput.value = currentCount + 1;
-    
-    documentCount++;
-}
-
-function removeDocument(button) {
-    const documentItem = button.closest('.document-item');
-    const formsetPrefix = '{{ document_formset.prefix }}';
-    
-    // Find the DELETE input for this form
-    const deleteInput = documentItem.querySelector(`input[name$="-DELETE"]`);
-    if (deleteInput) {
-        deleteInput.value = 'on';
+    if (addDocumentBtn && documentsContainer) {
+        addDocumentBtn.addEventListener('click', function() {
+            // Cloner la première ligne de formulaire
+            const firstRow = documentsContainer.querySelector('.document-row');
+            if (!firstRow) return;
+            
+            const clone = firstRow.cloneNode(true);
+            
+            // Mettre à jour les index des formulaires
+            const totalFormsInput = document.querySelector('input[name="documents-TOTAL_FORMS"]');
+            const currentCount = parseInt(totalFormsInput.value);
+            const newCount = currentCount + 1;
+            
+            // Mettre à jour tous les attributs name et id
+            const allInputs = clone.querySelectorAll('input, select, textarea, label');
+            allInputs.forEach(element => {
+                // Mettre à jour les attributs for des labels
+                if (element.tagName === 'LABEL' && element.htmlFor) {
+                    element.htmlFor = element.htmlFor.replace(`documents-${currentCount-1}`, `documents-${currentCount}`);
+                }
+                
+                // Mettre à jour les attributs name et id des inputs
+                if (element.name) {
+                    element.name = element.name.replace(`documents-${currentCount-1}`, `documents-${currentCount}`);
+                }
+                if (element.id) {
+                    element.id = element.id.replace(`documents-${currentCount-1}`, `documents-${currentCount}`);
+                }
+            });
+            
+            // Vider les valeurs des champs du clone
+            const inputs = clone.querySelectorAll('input, textarea');
+            inputs.forEach(input => {
+                if (input.type === 'file' || input.type === 'text' || input.tagName === 'TEXTAREA') {
+                    input.value = '';
+                } else if (input.type === 'checkbox') {
+                    input.checked = false;
+                } else if (input.tagName === 'SELECT') {
+                    input.selectedIndex = 0;
+                }
+            });
+            
+            // Vider les messages d'erreur
+            const errorDivs = clone.querySelectorAll('.text-danger, .alert-danger');
+            errorDivs.forEach(div => div.remove());
+            
+            // Mettre à jour le numéro du document
+            const documentTitle = clone.querySelector('h6');
+            if (documentTitle) {
+                documentTitle.textContent = `Document ${newCount + 1}`;
+            }
+            
+            // Afficher le bouton supprimer sur le clone
+            const removeBtn = clone.querySelector('.remove-document');
+            if (removeBtn) {
+                removeBtn.style.display = 'block';
+            }
+            
+            // Ajouter le clone au conteneur
+            documentsContainer.appendChild(clone);
+            
+            // Mettre à jour le compteur TOTAL_FORMS
+            totalFormsInput.value = newCount;
+            
+            // Ajouter les classes form-control aux nouveaux champs
+            const newFormFields = clone.querySelectorAll('input, select, textarea');
+            newFormFields.forEach(field => {
+                if (!field.classList.contains('form-control')) {
+                    field.classList.add('form-control');
+                }
+            });
+            
+            // Ajouter l'événement de suppression au nouveau bouton
+            addRemoveEvent(clone.querySelector('.remove-document'));
+        });
     }
     
-    // Remove from DOM immediately
-    documentItem.remove();
+    // Gestion de la suppression de documents
+    function addRemoveEvent(button) {
+        if (button) {
+            button.addEventListener('click', function() {
+                const documentRow = this.closest('.document-row');
+                if (documentRow) {
+                    // Cocher la case DELETE cachée
+                    const deleteInput = documentRow.querySelector('input[name$="-DELETE"]');
+                    if (deleteInput) {
+                        deleteInput.value = 'on';
+                        // Marquer visuellement la ligne comme supprimée
+                        documentRow.style.opacity = '0.5';
+                        documentRow.style.textDecoration = 'line-through';
+                        button.disabled = true;
+                        button.textContent = 'Marqué pour suppression';
+                    } else {
+                        // Si pas de champ DELETE (nouveau document), retirer la ligne du DOM
+                        documentRow.remove();
+                        
+                        // Mettre à jour les numéros des documents restants
+                        const remainingRows = documentsContainer.querySelectorAll('.document-row');
+                        remainingRows.forEach((row, index) => {
+                            const title = row.querySelector('h6');
+                            if (title) {
+                                // Conserver le nom du fichier existant si présent
+                                const existingText = title.textContent;
+                                const baseText = existingText.split('(')[0].trim();
+                                const existingInfo = existingText.includes('(') ? existingText.split('(')[1] : '';
+                                title.innerHTML = `Document ${index + 1} ${existingInfo ? '(' + existingInfo : ''}`;
+                            }
+                            
+                            // Gérer l'affichage du bouton supprimer
+                            const removeBtn = row.querySelector('.remove-document');
+                            const hasInstance = row.querySelector('input[name$="-id"]'); // Vérifier si c'est un document existant
+                            if (removeBtn) {
+                                removeBtn.style.display = (index === 0 && !hasInstance) ? 'none' : 'block';
+                            }
+                        });
+                        
+                        // Mettre à jour le compteur TOTAL_FORMS
+                        const totalFormsInput = document.querySelector('input[name="documents-TOTAL_FORMS"]');
+                        if (totalFormsInput) {
+                            totalFormsInput.value = Math.max(1, remainingRows.length);
+                        }
+                    }
+                }
+            });
+        }
+    }
     
-    // Update total forms count
-    const totalFormsInput = document.querySelector(`input[name="${formsetPrefix}-TOTAL_FORMS"]`);
-    totalFormsInput.value = Math.max(0, parseInt(totalFormsInput.value) - 1);
-}
+    // Initialiser les boutons de suppression existants
+    const existingRemoveBtns = document.querySelectorAll('.remove-document');
+    existingRemoveBtns.forEach(addRemoveEvent);
+});
 </script>
 {% endblock %}

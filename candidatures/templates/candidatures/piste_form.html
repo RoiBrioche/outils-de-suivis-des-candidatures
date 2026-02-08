@@ -114,20 +114,6 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="{{ form.contact.id_for_label }}" class="form-label">
-                            {{ form.contact.label }}
-                        </label>
-                        {{ form.contact }}
-                        {% if form.contact.errors %}
-                            <div class="text-danger">
-                                {% for error in form.contact.errors %}
-                                    <small>{{ error }}</small>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-
-                    <div class="mb-3">
                         <label for="{{ form.url_annonce.id_for_label }}" class="form-label">
                             {{ form.url_annonce.label }}
                         </label>
@@ -155,6 +141,189 @@
                         {% endif %}
                     </div>
 
+                    <!-- Section Contacts -->
+                    <div class="card mb-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="bi bi-people"></i> Contacts associés
+                            </h5>
+                            <button type="button" class="btn btn-outline-primary btn-sm" id="add-contact">
+                                <i class="bi bi-plus-circle"></i> Ajouter un contact
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            {{ contact_formset.management_form }}
+                            
+                            <div id="contacts-formset">
+                                {% for contact_form in contact_formset %}
+                                    <div class="contact-form border rounded p-3 mb-3 position-relative" data-form-index="{{ forloop.counter0 }}">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="mb-2">
+                                                    <label class="form-label">{{ contact_form.nom.label }} *</label>
+                                                    {{ contact_form.nom }}
+                                                    {% if contact_form.nom.errors %}
+                                                        <div class="text-danger">
+                                                            {% for error in contact_form.nom.errors %}
+                                                                <small>{{ error }}</small>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="mb-2">
+                                                    <label class="form-label">{{ contact_form.prenom.label }}</label>
+                                                    {{ contact_form.prenom }}
+                                                    {% if contact_form.prenom.errors %}
+                                                        <div class="text-danger">
+                                                            {% for error in contact_form.prenom.errors %}
+                                                                <small>{{ error }}</small>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="mb-2">
+                                                    <label class="form-label">{{ contact_form.poste_occupe.label }}</label>
+                                                    {{ contact_form.poste_occupe }}
+                                                    {% if contact_form.poste_occupe.errors %}
+                                                        <div class="text-danger">
+                                                            {% for error in contact_form.poste_occupe.errors %}
+                                                                <small>{{ error }}</small>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="mb-2">
+                                                    <label class="form-label">{{ contact_form.email.label }}</label>
+                                                    {{ contact_form.email }}
+                                                    {% if contact_form.email.errors %}
+                                                        <div class="text-danger">
+                                                            {% for error in contact_form.email.errors %}
+                                                                <small>{{ error }}</small>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="mb-2">
+                                                    <label class="form-label">{{ contact_form.telephone.label }}</label>
+                                                    {{ contact_form.telephone }}
+                                                    {% if contact_form.telephone.errors %}
+                                                        <div class="text-danger">
+                                                            {% for error in contact_form.telephone.errors %}
+                                                                <small>{{ error }}</small>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="mb-2">
+                                                    <label class="form-label">{{ contact_form.linkedin_url.label }}</label>
+                                                    {{ contact_form.linkedin_url }}
+                                                    {% if contact_form.linkedin_url.errors %}
+                                                        <div class="text-danger">
+                                                            {% for error in contact_form.linkedin_url.errors %}
+                                                                <small>{{ error }}</small>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-2">
+                                                    <label class="form-label">{{ contact_form.commentaires.label }}</label>
+                                                    {{ contact_form.commentaires }}
+                                                    {% if contact_form.commentaires.errors %}
+                                                        <div class="text-danger">
+                                                            {% for error in contact_form.commentaires.errors %}
+                                                                <small>{{ error }}</small>
+                                                            {% endfor %}
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mt-2">
+                                            <button type="button" class="btn btn-outline-danger btn-sm delete-contact-btn" data-bs-toggle="tooltip" title="Supprimer ce contact">
+                                                <i class="bi bi-trash"></i> Supprimer
+                                            </button>
+                                            {{ contact_form.DELETE.as_hidden }}
+                                            <small class="text-muted">Contact #{{ forloop.counter }}</small>
+                                        </div>
+                                        {{ contact_form.id }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Empty form template for JavaScript -->
+                            <div id="empty-contact-form" class="contact-form border rounded p-3 mb-3 position-relative" style="display: none;">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="mb-2">
+                                            <label class="form-label">Nom *</label>
+                                            <input type="text" name="contact-__prefix__-nom" class="form-control" placeholder="Nom obligatoire"id="id_contact-__prefix__-nom">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-2">
+                                            <label class="form-label">Prénom</label>
+                                            <input type="text" name="contact-__prefix__-prenom" class="form-control" placeholder="Prénom" id="id_contact-__prefix__-prenom">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-2">
+                                            <label class="form-label">Poste occupé</label>
+                                            <input type="text" name="contact-__prefix__-poste_occupe" class="form-control" placeholder="ex : RH, Lead Tech, Manager..." id="id_contact-__prefix__-poste_occupe">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-2">
+                                            <label class="form-label">Email</label>
+                                            <input type="email" name="contact-__prefix__-email" class="form-control" placeholder="email@exemple.com" id="id_contact-__prefix__-email">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="mb-2">
+                                            <label class="form-label">Téléphone</label>
+                                            <input type="text" name="contact-__prefix__-telephone" class="form-control" placeholder="06 12 34 56 78" id="id_contact-__prefix__-telephone">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-2">
+                                            <label class="form-label">URL LinkedIn</label>
+                                            <input type="url" name="contact-__prefix__-linkedin_url" class="form-control" placeholder="https://linkedin.com/in/..." id="id_contact-__prefix__-linkedin_url">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-2">
+                                            <label class="form-label">Commentaires</label>
+                                            <textarea name="contact-__prefix__-commentaires" class="form-control" placeholder="Notes sur ce contact..." id="id_contact-__prefix__-commentaires" rows="1"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <button type="button" class="btn btn-outline-danger btn-sm delete-contact-btn" data-bs-toggle="tooltip" title="Supprimer ce contact">
+                                        <i class="bi bi-trash"></i> Supprimer
+                                    </button>
+                                    <input type="hidden" name="contact-__prefix__-DELETE" id="id_contact-__prefix__-DELETE">
+                                    <small class="text-muted">Nouveau contact</small>
+                                </div>
+                                <input type="hidden" name="contact-__prefix__-id" id="id_contact-__prefix__-id">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="d-flex justify-content-between">
                         <a href="{% url 'candidatures:piste-list' %}" class="btn btn-secondary">
                             <i class="bi bi-arrow-left"></i> Retour à la liste
@@ -178,13 +347,111 @@
 {% block extra_js %}
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Add form-control class to all form fields
-    const formFields = document.querySelectorAll('input, select, textarea');
+    // Add form-control class to all form fields except checkboxes and hidden inputs
+    const formFields = document.querySelectorAll('input:not([type="checkbox"]):not([type="hidden"]), select, textarea');
     formFields.forEach(field => {
         if (!field.classList.contains('form-control')) {
             field.classList.add('form-control');
         }
     });
+
+    // Initialize Bootstrap tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    // Function to toggle delete state for a contact form
+    function toggleContactDelete(deleteBtn) {
+        const contactForm = deleteBtn.closest('.contact-form');
+        const deleteField = contactForm.querySelector('input[name$="-DELETE"]');
+        
+        if (deleteField.value === 'true' || deleteField.checked) {
+            // Undo deletion
+            deleteField.value = 'false';
+            deleteField.checked = false;
+            deleteBtn.className = 'btn btn-outline-danger btn-sm delete-contact-btn';
+            deleteBtn.innerHTML = '<i class="bi bi-trash"></i> Supprimer';
+            contactForm.style.opacity = '1';
+            contactForm.style.backgroundColor = '';
+            contactForm.classList.remove('border-danger');
+        } else {
+            // Mark for deletion
+            deleteField.value = 'true';
+            deleteField.checked = true;
+            deleteBtn.className = 'btn btn-danger btn-sm delete-contact-btn';
+            deleteBtn.innerHTML = '<i class="bi bi-x-circle"></i> Annuler la suppression';
+            contactForm.style.opacity = '0.5';
+            contactForm.style.backgroundColor = '#f8d7da';
+            contactForm.classList.add('border-danger');
+        }
+    }
+
+    // Add click handlers to existing delete buttons
+    document.querySelectorAll('.delete-contact-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            toggleContactDelete(this);
+        });
+    });
+
+    // Formset management for contacts
+    const addContactBtn = document.getElementById('add-contact');
+    const contactsFormset = document.getElementById('contacts-formset');
+    const emptyFormTemplate = document.getElementById('empty-contact-form');
+    const totalFormsInput = document.getElementById('id_contact-TOTAL_FORMS');
+    
+    if (addContactBtn && contactsFormset && emptyFormTemplate && totalFormsInput) {
+        let formCount = parseInt(totalFormsInput.value);
+
+        addContactBtn.addEventListener('click', function() {
+            // Clone the empty form template
+            const newForm = emptyFormTemplate.cloneNode(true);
+            newForm.style.display = 'block';
+            newForm.id = '';
+            
+            // Replace __prefix__ with the current form count
+            const formHtml = newForm.innerHTML.replace(/__prefix__/g, formCount);
+            newForm.innerHTML = formHtml;
+            
+            // Update form index
+            newForm.setAttribute('data-form-index', formCount);
+            
+            // Add the new form to the formset
+            contactsFormset.appendChild(newForm);
+            
+            // Update the total forms count
+            formCount++;
+            totalFormsInput.value = formCount;
+            
+            // Add form-control class to new fields (excluding checkboxes and hidden inputs)
+            const newFields = newForm.querySelectorAll('input:not([type="checkbox"]):not([type="hidden"]), select, textarea');
+            newFields.forEach(field => {
+                if (!field.classList.contains('form-control')) {
+                    field.classList.add('form-control');
+                }
+            });
+            
+            // Update contact number display
+            const contactNumber = newForm.querySelector('.text-muted');
+            if (contactNumber) {
+                contactNumber.textContent = `Contact #${formCount}`;
+            }
+
+            // Add delete button handler to the new form
+            const newDeleteBtn = newForm.querySelector('.delete-contact-btn');
+            if (newDeleteBtn) {
+                newDeleteBtn.addEventListener('click', function() {
+                    toggleContactDelete(this);
+                });
+            }
+
+            // Initialize tooltip for the new delete button
+            const newTooltip = newForm.querySelector('[data-bs-toggle="tooltip"]');
+            if (newTooltip) {
+                new bootstrap.Tooltip(newTooltip);
+            }
+        });
+    }
 });
 </script>
 {% endblock %}

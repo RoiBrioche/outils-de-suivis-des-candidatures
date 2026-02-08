@@ -20,34 +20,82 @@
 <!-- Search and Filter Form -->
 <div class="card mb-4">
     <div class="card-body">
-        <form method="get" class="row g-3">
+        <form method="get" class="row g-3 align-items-end">
+
             <div class="col-md-4">
                 {{ search_form.search.label_tag }}
                 {{ search_form.search }}
             </div>
+
             <div class="col-md-2">
                 {{ search_form.statut.label_tag }}
                 {{ search_form.statut }}
             </div>
+
             <div class="col-md-2">
                 {{ search_form.periode_recherche.label_tag }}
                 {{ search_form.periode_recherche }}
             </div>
+
             <div class="col-md-2">
                 {{ search_form.type_contrat.label_tag }}
                 {{ search_form.type_contrat }}
             </div>
-            <div class="col-md-2 d-flex align-items-end">
-                <button type="submit" class="btn btn-outline-primary me-2">
+
+            <!-- Boutons : layout sûr, responsive, sans débordement -->
+            <div class="col-md-2 d-flex flex-column gap-2">
+                <button type="submit" class="btn btn-outline-primary w-100">
                     <i class="bi bi-search"></i> Rechercher
                 </button>
-                <a href="{% url 'candidatures:candidature-list' %}" class="btn btn-outline-secondary">
+                <a href="{% url 'candidatures:candidature-list' %}"
+                   class="btn btn-outline-secondary w-100">
                     <i class="bi bi-x-circle"></i> Effacer
                 </a>
             </div>
+
         </form>
+
+        <hr class="my-3">
+
+        <!-- Nombre d'éléments par page -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <small class="text-muted">
+                    {% if is_paginated %}
+                        Affichage de {{ page_obj.start_index }} à {{ page_obj.end_index }}
+                        sur {{ page_obj.paginator.count }}
+                        candidature{{ page_obj.paginator.count|pluralize }}
+                    {% elif candidatures %}
+                        {{ candidatures|length }}
+                        candidature{{ candidatures|length|pluralize }}
+                    {% endif %}
+                </small>
+            </div>
+
+            <div class="btn-group btn-group-sm" role="group" aria-label="Éléments par page">
+                <span class="align-self-center me-2 text-muted small">
+                    Afficher :
+                </span>
+
+                {% for option in paginate_by_options %}
+                    {% if option == current_per_page %}
+                        <button type="button" class="btn btn-primary">
+                            {{ option }}
+                        </button>
+                    {% else %}
+                        <a
+                            href="?{% querystring_with_per_page option %}"
+                            class="btn btn-outline-primary"
+                        >
+                            {{ option }}
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
+
 
 <!-- Results -->
 <div class="card">
@@ -151,20 +199,75 @@
                                 <span class="badge badge-custom badge-gray">{{ candidature.get_type_contrat_display }}</span>
                             </td>
                             <td>
-                                <span class="badge badge-custom badge-blue">{{ candidature.statut }}</span>
+                                <span class="badge badge-custom badge-blue editable-badge" 
+                                      data-field="statut" 
+                                      data-id="{{ candidature.pk }}"
+                                      data-url="{% url 'candidatures:candidature-update-field' candidature.pk %}"
+                                      data-current-value="{{ candidature.statut.pk }}"
+                                      data-display-value="{{ candidature.statut }}"
+                                      data-statuts='[
+                                          {% for statut in statuts_disponibles %}
+                                          {"value": "{{ statut.pk|escapejs }}", "label": "{{ statut.nom|escapejs }}"}{% if not forloop.last %},{% endif %}
+                                          {% endfor %}
+                                      ]'
+                                      style="cursor: pointer; position: relative;"
+                                      title="Cliquer pour modifier">
+                                    {{ candidature.statut }}
+                                    <i class="bi bi-caret-down-fill ms-1" style="font-size: 0.6em;"></i>
+                                </span>
                             </td>
                             <td>{{ candidature.date_candidature }}</td>
                             <td>
                                 {% if candidature.priorite %}
                                     {% if candidature.priorite == 'ELEVEE' %}
-                                        <span class="badge badge-custom badge-red">{{ candidature.get_priorite_display }}</span>
+                                        <span class="badge badge-custom badge-red editable-badge" 
+                                              data-field="priorite" 
+                                              data-id="{{ candidature.pk }}"
+                                              data-url="{% url 'candidatures:candidature-update-field' candidature.pk %}"
+                                              data-current-value="{{ candidature.priorite }}"
+                                              data-display-value="{{ candidature.get_priorite_display }}"
+                                              style="cursor: pointer; position: relative;"
+                                              title="Cliquer pour modifier">
+                                            {{ candidature.get_priorite_display }}
+                                            <i class="bi bi-caret-down-fill ms-1" style="font-size: 0.6em;"></i>
+                                        </span>
                                     {% elif candidature.priorite == 'NORMALE' %}
-                                        <span class="badge badge-custom badge-yellow">{{ candidature.get_priorite_display }}</span>
+                                        <span class="badge badge-custom badge-yellow editable-badge" 
+                                              data-field="priorite" 
+                                              data-id="{{ candidature.pk }}"
+                                              data-url="{% url 'candidatures:candidature-update-field' candidature.pk %}"
+                                              data-current-value="{{ candidature.priorite }}"
+                                              data-display-value="{{ candidature.get_priorite_display }}"
+                                              style="cursor: pointer; position: relative;"
+                                              title="Cliquer pour modifier">
+                                            {{ candidature.get_priorite_display }}
+                                            <i class="bi bi-caret-down-fill ms-1" style="font-size: 0.6em;"></i>
+                                        </span>
                                     {% else %}
-                                        <span class="badge badge-custom badge-gray">{{ candidature.get_priorite_display }}</span>
+                                        <span class="badge badge-custom badge-gray editable-badge" 
+                                              data-field="priorite" 
+                                              data-id="{{ candidature.pk }}"
+                                              data-url="{% url 'candidatures:candidature-update-field' candidature.pk %}"
+                                              data-current-value="{{ candidature.priorite }}"
+                                              data-display-value="{{ candidature.get_priorite_display }}"
+                                              style="cursor: pointer; position: relative;"
+                                              title="Cliquer pour modifier">
+                                            {{ candidature.get_priorite_display }}
+                                            <i class="bi bi-caret-down-fill ms-1" style="font-size: 0.6em;"></i>
+                                        </span>
                                     {% endif %}
                                 {% else %}
-                                    <span class="text-muted">-</span>
+                                    <span class="badge badge-custom badge-gray editable-badge" 
+                                          data-field="priorite" 
+                                          data-id="{{ candidature.pk }}"
+                                          data-url="{% url 'candidatures:candidature-update-field' candidature.pk %}"
+                                          data-current-value=""
+                                          data-display-value="Aucune"
+                                          style="cursor: pointer; position: relative;"
+                                          title="Cliquer pour modifier">
+                                        Aucune
+                                        <i class="bi bi-caret-down-fill ms-1" style="font-size: 0.6em;"></i>
+                                    </span>
                                 {% endif %}
                             </td>
                             <td>
@@ -196,14 +299,18 @@
             {% if is_paginated %}
                 <nav aria-label="Pagination des candidatures">
                     <ul class="pagination justify-content-center">
+
                         {% if page_obj.has_previous %}
                             <li class="page-item">
-                                <a class="page-link" href="?page=1{% if clean_querystring %}&{{ clean_querystring }}{% endif %}">
+                                <a class="page-link"
+                                href="?{% querystring_without_page 1 %}&per_page={{ current_per_page }}">
                                     <i class="bi bi-chevron-double-left"></i>
                                 </a>
                             </li>
+
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if clean_querystring %}&{{ clean_querystring }}{% endif %}">
+                                <a class="page-link"
+                                href="?{% querystring_without_page page_obj.previous_page_number %}&per_page={{ current_per_page }}">
                                     <i class="bi bi-chevron-left"></i>
                                 </a>
                             </li>
@@ -215,27 +322,35 @@
                                     <span class="page-link">{{ num }}</span>
                                 </li>
                             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                                <li class="page-item">
-                                    <a class="page-link" href="?page={{ num }}{% if clean_querystring %}&{{ clean_querystring }}{% endif %}">{{ num }}</a>
-                                </li>
-                            {% endif %}
+                            <li class="page-item">
+                                <a class="page-link"
+                                href="?{% querystring_without_page num %}&per_page={{ current_per_page }}">
+                                    {{ num }}
+                                </a>
+                            </li>
+                        {% endif %}
                         {% endfor %}
 
                         {% if page_obj.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if clean_querystring %}&{{ clean_querystring }}{% endif %}">
+                                <a class="page-link"
+                                href="?{% querystring_without_page page_obj.next_page_number %}&per_page={{ current_per_page }}">
                                     <i class="bi bi-chevron-right"></i>
                                 </a>
                             </li>
+
                             <li class="page-item">
-                                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if clean_querystring %}&{{ clean_querystring }}{% endif %}">
+                                <a class="page-link"
+                                href="?{% querystring_without_page page_obj.paginator.num_pages %}&per_page={{ current_per_page }}">
                                     <i class="bi bi-chevron-double-right"></i>
                                 </a>
                             </li>
                         {% endif %}
+
                     </ul>
                 </nav>
             {% endif %}
+
         {% else %}
             <div class="text-center py-5">
                 <i class="bi bi-inbox fs-1 text-muted"></i>
@@ -254,4 +369,262 @@
         {% endif %}
     </div>
 </div>
+
+<!-- Script pour l'édition inline -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Récupérer le token CSRF
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    const csrftoken = getCookie('csrftoken');
+    
+    // Récupérer les options depuis les attributs data du premier badge
+    const firstStatutBadge = document.querySelector('[data-field="statut"]');
+    const statutsOptions = firstStatutBadge ? JSON.parse(firstStatutBadge.dataset.statuts || '[]') : [];
+    
+    const prioriteOptions = [
+        { value: '', label: 'Aucune' },
+        { value: 'FAIBLE', label: 'Faible' },
+        { value: 'NORMALE', label: 'Normale' },
+        { value: 'ELEVEE', label: 'Élevée' }
+    ];
+    
+    // Gérer les clics sur les badges éditables
+    document.querySelectorAll('.editable-badge').forEach(function(badge) {
+        badge.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Si déjà en mode édition, ne rien faire
+            if (this.dataset.editing === 'true') {
+                return;
+            }
+            
+            // Marquer comme en édition
+            this.dataset.editing = 'true';
+            
+            const field = this.dataset.field;
+            const currentValue = this.dataset.currentValue;
+            const url = this.dataset.url;
+            const badgeClasses = this.className;
+            
+            // Créer le select
+            const select = document.createElement('select');
+            select.className = 'form-select form-select-sm';
+            select.style.cssText = 'min-width: 120px; font-size: 0.875em;';
+            
+            // Ajouter les options selon le champ
+            const options = field === 'statut' ? statutsOptions : prioriteOptions;
+            options.forEach(function(option) {
+                const optionElement = document.createElement('option');
+                optionElement.value = option.value;
+                optionElement.textContent = option.label;
+                if (option.value === currentValue) {
+                    optionElement.selected = true;
+                }
+                select.appendChild(optionElement);
+            });
+            
+            // Remplacer le badge par le select
+            this.parentNode.insertBefore(select, this);
+            this.style.display = 'none';
+            
+            // Focus sur le select
+            select.focus();
+            
+            // Gérer le changement
+            const handleSelectChange = () => {
+                const newValue = select.value;
+                
+                // Désactiver le select pendant la requête
+                select.disabled = true;
+                
+                // Préparer les données AJAX
+                const data = {
+                    'field': field,
+                    'value': newValue
+                };
+                
+                // Envoyer la requête AJAX
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Succès : mettre à jour le badge
+                        this.dataset.currentValue = newValue;
+                        this.dataset.displayValue = data.display_value || newValue;
+                        
+                        // Mettre à jour le texte du badge
+                        const textNode = this.childNodes[0];
+                        if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+                            textNode.textContent = data.display_value || newValue;
+                        } else {
+                            // Trouver et mettre à jour le texte
+                            const textParts = this.innerHTML.split('<i');
+                            if (textParts.length > 0) {
+                                const newText = textParts[0].replace(/^.+?/, data.display_value || newValue);
+                                this.innerHTML = newText + '<i class="bi bi-caret-down-fill ms-1" style="font-size: 0.6em;"></i>';
+                            }
+                        }
+                        
+                        // Mettre à jour les classes de couleur si nécessaire pour la priorité
+                        if (field === 'priorite') {
+                            // Supprimer les classes de couleur existantes
+                            this.classList.remove('badge-red', 'badge-yellow', 'badge-gray');
+                            
+                            // Ajouter la nouvelle classe de couleur
+                            if (newValue === 'ELEVEE') {
+                                this.classList.add('badge-red');
+                            } else if (newValue === 'NORMALE') {
+                                this.classList.add('badge-yellow');
+                            } else {
+                                this.classList.add('badge-gray');
+                            }
+                        }
+                        
+                        showMessage('Succès', data.message, 'success');
+                        
+                        // Appliquer un style de succès temporaire
+                        this.style.backgroundColor = '#198754';
+                        setTimeout(() => {
+                            this.style.backgroundColor = '';
+                        }, 1000);
+                        
+                    } else {
+                        // Erreur : afficher le message
+                        showMessage('Erreur', data.error, 'danger');
+                        
+                        // Appliquer un style d'erreur temporaire
+                        this.style.backgroundColor = '#dc3545';
+                        setTimeout(() => {
+                            this.style.backgroundColor = '';
+                        }, 2000);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur AJAX:', error);
+                    showMessage('Erreur', 'Une erreur technique est survenue', 'danger');
+                    
+                    // Appliquer un style d'erreur temporaire
+                    this.style.backgroundColor = '#dc3545';
+                    setTimeout(() => {
+                        this.style.backgroundColor = '';
+                    }, 2000);
+                })
+                .finally(() => {
+                    // Nettoyer et restaurer le badge
+                    select.remove();
+                    this.style.display = '';
+                    this.dataset.editing = 'false';
+                });
+            };
+            
+            // Gérer la perte de focus (annuler l'édition)
+            const handleBlur = (e) => {
+                // Ne pas annuler si le focus va vers une option du select
+                if (e.relatedTarget && e.relatedTarget.tagName === 'OPTION') {
+                    return;
+                }
+                
+                // Annuler l'édition
+                select.remove();
+                this.style.display = '';
+                this.dataset.editing = 'false';
+            };
+            
+            // Ajouter les écouteurs d'événements
+            select.addEventListener('change', handleSelectChange);
+            select.addEventListener('blur', handleBlur);
+            
+            // Gérer la touche Échap pour annuler
+            select.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    select.removeEventListener('change', handleSelectChange);
+                    select.removeEventListener('blur', handleBlur);
+                    select.remove();
+                    badge.style.display = '';
+                    badge.dataset.editing = 'false';
+                }
+            });
+        });
+        
+        // Ajouter un effet hover
+        badge.addEventListener('mouseenter', function() {
+            if (this.dataset.editing !== 'true') {
+                this.style.opacity = '0.8';
+                this.style.transform = 'scale(1.05)';
+            }
+        });
+        
+        badge.addEventListener('mouseleave', function() {
+            if (this.dataset.editing !== 'true') {
+                this.style.opacity = '';
+                this.style.transform = '';
+            }
+        });
+    });
+    
+    // Fonction pour afficher des messages toast simples
+    function showMessage(title, message, type) {
+        // Créer un toast simple
+        const toastHtml = `
+            <div class="toast align-items-center text-white bg-${type} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <strong>${title}:</strong> ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        `;
+        
+        // Créer un conteneur pour les toasts s'il n'existe pas
+        let toastContainer = document.getElementById('toast-container');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.id = 'toast-container';
+            toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
+            document.body.appendChild(toastContainer);
+        }
+        
+        // Ajouter le toast au conteneur
+        const toastElement = document.createElement('div');
+        toastElement.innerHTML = toastHtml;
+        toastContainer.appendChild(toastElement.firstElementChild);
+        
+        // Initialiser et afficher le toast
+        const toast = new bootstrap.Toast(toastContainer.lastElementChild, {
+            autohide: true,
+            delay: 3000
+        });
+        toast.show();
+        
+        // Nettoyer le toast après qu'il soit caché
+        toastContainer.lastElementChild.addEventListener('hidden.bs.toast', function() {
+            this.remove();
+        });
+    }
+});
+</script>
 {% endblock %}

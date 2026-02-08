@@ -26,7 +26,6 @@
                     <div class="col-md-6">
                         <p><strong>Poste ciblé:</strong> {{ piste.poste_cible|default:"Non spécifié" }}</p>
                         <p><strong>Source:</strong> {{ piste.source|default:"Non spécifiée" }}</p>
-                        <p><strong>Contact:</strong> {{ piste.contact|default:"Non spécifié" }}</p>
                     </div>
                     <div class="col-md-6">
                         <p><strong>État:</strong> 
@@ -92,6 +91,9 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Inclure la carte Contacts avec ajout direct -->
+        {% include 'candidatures/contacts_card.html' %}
     </div>
 </div>
 {% endblock %}

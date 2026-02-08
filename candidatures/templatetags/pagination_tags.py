@@ -65,3 +65,29 @@ def querystring_with_sort(context, sort_field):
     query_dict['sort'] = sort_field
     
     return query_dict.urlencode()
+
+
+@register.simple_tag(takes_context=True)
+def querystring_with_per_page(context, per_page):
+    """
+    Generate a querystring that removes any existing 'per_page' and 'page' parameters
+    and adds the new per_page parameter, preserving all other query parameters.
+    
+    Usage: {% querystring_with_per_page context 30 %}
+    
+    This is used for changing items per page while preserving filters and sort.
+    The page parameter is reset to 1 when changing per_page to avoid invalid page numbers.
+    """
+    request = context['request']
+    
+    # Get current query parameters from request.GET
+    query_dict = request.GET.copy()
+    
+    # Remove any existing per_page and page parameters
+    query_dict.pop('per_page', None)
+    query_dict.pop('page', None)
+    
+    # Add the new per_page parameter
+    query_dict['per_page'] = str(per_page)
+    
+    return query_dict.urlencode()

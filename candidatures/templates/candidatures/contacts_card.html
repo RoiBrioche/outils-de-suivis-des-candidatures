@@ -1,0 +1,589 @@
+<!-- Contacts Card -->
+<div class="card mt-3">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="bi bi-people"></i> Contacts
+            <span class="badge bg-primary ms-2">{{ piste.contacts.count }}</span>
+        </h5>
+    </div>
+
+    <div class="card-body">
+        {% if piste.contacts.exists %}
+            {% for contact in piste.contacts.all %}
+                <div class="border rounded p-3 mb-3 position-relative">
+                    <div class="position-absolute top-0 end-0 m-2">
+                        <button type="button" class="btn btn-sm btn-outline-danger p-1" 
+                                onclick="removeContactFromPiste('{{ contact.pk }}')"
+                                title="Retirer ce contact"
+                                style="font-size: 0.75rem; line-height: 1; min-height: auto;">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                    </div>
+                    
+                    <h6 class="mb-1">
+                        <i class="bi bi-person"></i>
+                        {% if contact.prenom %}
+                            {{ contact.prenom }} {{ contact.nom }}
+                        {% else %}
+                            {{ contact.nom }}
+                        {% endif %}
+                        {% if contact.poste_occupe %}
+                            <small class="text-muted">({{ contact.poste_occupe }})</small>
+                        {% endif %}
+                    </h6>
+
+                    <div class="row g-2">
+                        {% if contact.email %}
+                            <div class="col-auto">
+                                <a href="mailto:{{ contact.email }}" class="btn btn-sm btn-outline-primary text-decoration-none">
+                                    <i class="bi bi-envelope"></i> {{ contact.email }}
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if contact.telephone %}
+                            <div class="col-auto">
+                                <a href="tel:{{ contact.telephone }}" class="btn btn-sm btn-outline-success text-decoration-none">
+                                    <i class="bi bi-telephone"></i> {{ contact.telephone }}
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% if contact.linkedin_url %}
+                            <div class="col-auto">
+                                <a href="{{ contact.linkedin_url }}" target="_blank" 
+                                   class="btn btn-sm btn-outline-info text-decoration-none">
+                                    <i class="bi bi-linkedin"></i> LinkedIn
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {% if contact.commentaires %}
+                        <div class="mt-2">
+                            <small class="text-muted">
+                                <i class="bi bi-chat-text"></i> {{ contact.commentaires|truncatewords:20 }}
+                            </small>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center text-muted py-4">
+                <i class="bi bi-people fs-1"></i>
+                <p class="mb-0">Aucun contact associé</p>
+                <small class="text-muted">Ajoutez des contacts pour suivre votre réseau</small>
+            </div>
+        {% endif %}
+
+        <!-- Formulaire d'ajout de contact collapsible -->
+        <div class="collapse mt-3" id="addContactCollapse">
+            <div class="border rounded p-3 bg-light">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 class="mb-0">
+                        <i class="bi bi-person-plus"></i> Ajouter un nouveau contact
+                    </h6>
+                    <span class="badge bg-success" id="contactCount">1 contact</span>
+                </div>
+                
+                <form id="contactForm" method="post" action="{% url 'candidatures:contact-add-ajax' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="piste_id" value="{{ piste.pk }}">
+                    
+                    <div id="contactFormsContainer">
+                        <!-- Premier formulaire de contact -->
+                        <div class="contact-form-item mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-primary">Contact 1</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger d-none" 
+                                        onclick="removeContactForm(this)" title="Supprimer ce contact">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="row g-2">
+                                <div class="col-md-6">
+                                    <label class="form-label small">Prénom</label>
+                                    <input type="text" name="prenom_0" class="form-control form-control-sm" 
+                                           placeholder="Prénom">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small">Nom *</label>
+                                    <input type="text" name="nom_0" class="form-control form-control-sm" 
+                                           placeholder="Nom obligatoire" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small">Poste</label>
+                                    <input type="text" name="poste_occupe_0" class="form-control form-control-sm" 
+                                           placeholder="ex: RH, Lead Tech, Manager...">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small">Email</label>
+                                    <input type="email" name="email_0" class="form-control form-control-sm" 
+                                           placeholder="email@exemple.com">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small">Téléphone</label>
+                                    <input type="tel" name="telephone_0" class="form-control form-control-sm" 
+                                           placeholder="06 12 34 56 78">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small">LinkedIn</label>
+                                    <input type="url" name="linkedin_url_0" class="form-control form-control-sm" 
+                                           placeholder="https://linkedin.com/in/...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center align-items-center mt-4">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-secondary btn-sm me-2" 
+                                    data-bs-toggle="collapse" data-bs-target="#addContactCollapse">
+                                <i class="bi bi-x-circle"></i> Annuler
+                            </button>
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="bi bi-check-circle"></i> Enregistrer
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer avec action persistante -->
+    <div class="card-footer bg-transparent">
+        <div class="d-grid">
+            <button type="button" id="toggleContactFormBtn" class="btn btn-outline-primary">
+                <i class="bi bi-plus-circle"></i> Ajouter un contact
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Messages de feedback -->
+<div id="contactAlerts" class="position-fixed top-0 end-0 p-3" style="z-index: 1050;"></div>
+
+<!-- Styles pour les animations -->
+<style>
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .contact-form-item {
+        border-left: 3px solid #0d6efd;
+        padding-left: 15px;
+        margin-bottom: 20px;
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 5px;
+        padding: 10px 15px;
+    }
+    
+    .contact-form-item:not(:first-child) {
+        animation: slideIn 0.3s ease-out;
+    }
+    
+    .contact-form-item:hover {
+        background: rgba(255, 255, 255, 0.8);
+        transition: background 0.2s ease;
+    }
+    
+    .alert-custom {
+        animation: slideIn 0.3s ease-out;
+        min-width: 300px;
+    }
+    
+    /* Amélioration de l'espacement des boutons */
+    .btn-group .btn + .btn {
+        margin-left: 0.5rem;
+    }
+    
+    /* Correction du bouton de suppression dans les cartes de contact */
+    .position-absolute .btn-outline-danger {
+        padding: 0.25rem 0.5rem !important;
+        font-size: 0.75rem !important;
+        line-height: 1 !important;
+        min-height: auto !important;
+        border-radius: 0.25rem !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    .position-absolute .btn-outline-danger:hover {
+        transform: scale(1.1);
+        box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+    }
+    
+    /* Espacement responsive pour mobile */
+    @media (max-width: 576px) {
+        .d-flex.justify-content-between {
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .btn-group {
+            width: 100%;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-group .btn {
+            flex: 1;
+        }
+        
+        .position-absolute .btn-outline-danger {
+            padding: 0.2rem 0.4rem !important;
+            font-size: 0.7rem !important;
+        }
+    }
+</style>
+
+<!-- JavaScript pour le clonage dynamique et gestion des contacts -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let contactIndex = 1;
+    let isFormOpen = false;
+    
+    // Gestionnaire pour le bouton à double fonctionnalité
+    const toggleBtn = document.getElementById('toggleContactFormBtn');
+    const collapseElement = document.getElementById('addContactCollapse');
+    
+    // Initialiser Bootstrap Collapse manuellement
+    const bsCollapse = new bootstrap.Collapse(collapseElement, {
+        toggle: false  // Ne pas basculer automatiquement
+    });
+    
+    // Gestionnaire de clic sur le bouton toggle
+    toggleBtn.addEventListener('click', function(e) {
+        if (isFormOpen) {
+            // Si le formulaire est déjà ouvert, ajouter un nouveau contact
+            e.preventDefault();
+            addNewContactForm();
+        } else {
+            // Sinon, ouvrir le formulaire
+            bsCollapse.show();
+        }
+    });
+    
+    // Écouter les événements du collapse Bootstrap
+    collapseElement.addEventListener('show.bs.collapse', function() {
+        isFormOpen = true;
+        updateToggleButton();
+        // S'assurer qu'il n'y a qu'un seul formulaire au début
+        ensureSingleForm();
+    });
+    
+    collapseElement.addEventListener('hide.bs.collapse', function() {
+        isFormOpen = false;
+        updateToggleButton();
+    });
+    
+    // Fonction pour s'assurer qu'il n'y a qu'un seul formulaire au début
+    function ensureSingleForm() {
+        const container = document.getElementById('contactFormsContainer');
+        const forms = container.querySelectorAll('.contact-form-item');
+        
+        console.log('ensureSingleForm appelé, nombre de formulaires:', forms.length);
+        
+        // S'il y a plus d'un formulaire, supprimer les supplémentaires
+        if (forms.length > 1) {
+            console.log('Suppression des formulaires supplémentaires');
+            forms.forEach((form, index) => {
+                if (index > 0) {
+                    form.remove();
+                }
+            });
+            contactIndex = 1;
+            updateContactCount();
+        }
+        
+        // Masquer les boutons de suppression s'il n'y a qu'un formulaire
+        const deleteBtns = container.querySelectorAll('.btn-outline-danger');
+        deleteBtns.forEach(btn => btn.classList.add('d-none'));
+    }
+    
+    // Fonction pour ajouter un nouveau formulaire de contact
+    function addNewContactForm() {
+        const container = document.getElementById('contactFormsContainer');
+        const firstForm = container.querySelector('.contact-form-item');
+        const newForm = firstForm.cloneNode(true);
+        
+        console.log('Ajout du formulaire - contactIndex actuel:', contactIndex);
+        
+        // Mettre à jour les indices et réinitialiser les valeurs
+        newForm.style.animation = 'slideIn 0.3s ease-out';
+        const inputs = newForm.querySelectorAll('input');
+        inputs.forEach(input => {
+            const name = input.name;
+            const newName = name.replace(/_\d+$/, '_' + contactIndex);
+            input.name = newName;
+            input.value = '';
+            
+            // Réinitialiser l'attribut required si nécessaire
+            if (input.hasAttribute('required') && newName.includes('nom_')) {
+                input.setAttribute('required', '');
+            }
+        });
+        
+        // Mettre à jour le numéro du contact dans le badge
+        const badge = newForm.querySelector('.contact-form-item > .d-flex span.badge');
+
+        if (badge) {
+            const newBadgeText = `Contact ${contactIndex + 1}`;
+            badge.textContent = newBadgeText;
+            console.log('Badge mis à jour vers:', newBadgeText);
+        } else {
+            console.log('Badge non trouvé dans le nouveau formulaire');
+        }
+        
+        // Afficher le bouton de suppression pour tous les formulaires sauf le premier
+        const deleteBtns = container.querySelectorAll('.btn-outline-danger');
+        deleteBtns.forEach(btn => btn.classList.remove('d-none'));
+        
+        container.appendChild(newForm);
+        contactIndex++;
+        updateContactCount();
+        
+        console.log('Formulaire ajouté, nouveau contactIndex:', contactIndex);
+        
+        // Faire défiler jusqu'au nouveau formulaire
+        newForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Focus sur le premier champ du nouveau formulaire
+        const firstInput = newForm.querySelector('input');
+        if (firstInput) {
+            setTimeout(() => firstInput.focus(), 300);
+        }
+        
+        // Afficher un feedback visuel
+        showAlert('Nouveau formulaire de contact ajouté', 'info');
+    }
+    
+    // Fonction pour mettre à jour le texte et l'icône du bouton
+    function updateToggleButton() {
+        if (isFormOpen) {
+            toggleBtn.innerHTML = '<i class="bi bi-plus-circle"></i> Ajouter un autre contact';
+            toggleBtn.classList.remove('btn-outline-primary');
+            toggleBtn.classList.add('btn-outline-success');
+        } else {
+            toggleBtn.innerHTML = '<i class="bi bi-plus-circle"></i> Ajouter un contact';
+            toggleBtn.classList.remove('btn-outline-success');
+            toggleBtn.classList.add('btn-outline-primary');
+        }
+    }
+    
+    // Gestionnaire de soumission du formulaire
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const contacts = [];
+        
+        // Collecter tous les contacts
+        for (let i = 0; i < contactIndex; i++) {
+            const nom = formData.get(`nom_${i}`);
+            if (nom && nom.trim()) {
+                contacts.push({
+                    nom: nom.trim(),
+                    prenom: formData.get(`prenom_${i}`)?.trim() || '',
+                    poste_occupe: formData.get(`poste_occupe_${i}`)?.trim() || '',
+                    email: formData.get(`email_${i}`)?.trim() || '',
+                    telephone: formData.get(`telephone_${i}`)?.trim() || '',
+                    linkedin_url: formData.get(`linkedin_url_${i}`)?.trim() || ''
+                });
+            }
+        }
+        
+        if (contacts.length === 0) {
+            showAlert('Veuillez remplir au moins le nom d\'un contact.', 'warning');
+            return;
+        }
+        
+        // Désactiver les boutons pendant la soumission
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Enregistrement...';
+        
+        // Envoyer les données via AJAX
+        fetch(this.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken'),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                piste_id: formData.get('piste_id'),
+                contacts: contacts
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showAlert(data.message || 'Contacts ajoutés avec succès!', 'success');
+                // Recharger la page après un court délai pour voir les nouveaux contacts
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1500);
+            } else {
+                showAlert('Erreur: ' + (data.error || 'Erreur inconnue'), 'danger');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showAlert('Une erreur est survenue lors de l\'ajout des contacts.', 'danger');
+        })
+        .finally(() => {
+            // Réactiver les boutons
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="bi bi-check-circle"></i> Enregistrer';
+        });
+    });
+    
+    // Réinitialiser le formulaire quand on ferme le collapse
+    document.getElementById('addContactCollapse').addEventListener('hidden.bs.collapse', function() {
+        document.getElementById('contactForm').reset();
+        
+        // Supprimer tous les formulaires sauf le premier
+        const container = document.getElementById('contactFormsContainer');
+        const forms = container.querySelectorAll('.contact-form-item');
+        forms.forEach((form, index) => {
+            if (index > 0) {
+                form.remove();
+            }
+        });
+        
+        // Masquer les boutons de suppression
+        const deleteBtns = container.querySelectorAll('.btn-outline-danger');
+        deleteBtns.forEach(btn => btn.classList.add('d-none'));
+        
+        contactIndex = 1;
+        updateContactCount();
+    });
+    
+    // Mettre à jour le compteur de contacts
+    function updateContactCount() {
+        const count = document.getElementById('contactFormsContainer').querySelectorAll('.contact-form-item').length;
+        const countElement = document.getElementById('contactCount');
+        if (countElement) {
+            countElement.textContent = count === 1 ? '1 contact' : `${count} contacts`;
+        }
+    }
+    
+    // Fonction pour supprimer un formulaire de contact
+    window.removeContactForm = function(button) {
+        const form = button.closest('.contact-form-item');
+        form.style.animation = 'slideIn 0.3s ease-out reverse';
+        setTimeout(() => {
+            form.remove();
+            updateContactCount();
+            
+            // Masquer le bouton de suppression s'il ne reste qu'un seul formulaire
+            const container = document.getElementById('contactFormsContainer');
+            const remainingForms = container.querySelectorAll('.contact-form-item');
+            if (remainingForms.length === 1) {
+                const deleteBtn = remainingForms[0].querySelector('.btn-outline-danger');
+                if (deleteBtn) {
+                    deleteBtn.classList.add('d-none');
+                }
+            }
+        }, 300);
+    };
+    
+    // Fonction pour afficher des alertes personnalisées
+    function showAlert(message, type) {
+        const alertContainer = document.getElementById('contactAlerts');
+        const alertId = 'alert-' + Date.now();
+        
+        const alertHtml = `
+            <div id="${alertId}" class="alert alert-${type} alert-dismissible fade show alert-custom" role="alert">
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : type === 'info' ? 'info-circle' : 'x-circle'} me-2"></i>
+                    <div>${message}</div>
+                    <button type="button" class="btn-close ms-2" data-bs-dismiss="alert"></button>
+                </div>
+            </div>
+        `;
+        
+        alertContainer.insertAdjacentHTML('beforeend', alertHtml);
+        
+        // Auto-suppression après 5 secondes
+        setTimeout(() => {
+            const alert = document.getElementById(alertId);
+            if (alert) {
+                alert.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => alert.remove(), 300);
+            }
+        }, 5000);
+    }
+    
+    // Fonction pour retirer un contact de la piste
+    window.removeContactFromPiste = function(contactId) {
+        console.log('Tentative de suppression du contact:', contactId);
+        
+        if (confirm('Êtes-vous sûr de vouloir retirer ce contact de la piste ?')) {
+            // Trouver le bouton cliqué
+            const button = document.querySelector(`button[onclick*="${contactId}"]`);
+            if (!button) {
+                console.log('Bouton non trouvé pour le contact:', contactId);
+                return;
+            }
+            
+            console.log('Bouton trouvé:', button);
+            
+            // Désactiver le bouton pendant la suppression
+            const originalHtml = button.innerHTML;
+            button.disabled = true;
+            button.innerHTML = '<i class="bi bi-hourglass-split"></i>';
+            
+            const requestData = {
+                contact_id: contactId,
+                piste_id: '{{ piste.pk }}'
+            };
+            
+            console.log('Données envoyées:', requestData);
+            
+            // Envoyer la requête de suppression via AJAX
+            fetch('{% url "candidatures:contact-remove-from-piste" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => {
+                console.log('Réponse brute:', response);
+                return response.json();
+            })
+            .then(data => {
+                console.log('Données reçues:', data);
+                if (data.success) {
+                    showAlert('Contact retiré avec succès', 'success');
+                    // Recharger la page après un court délai
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    showAlert('Erreur: ' + (data.error || 'Impossible de retirer ce contact'), 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur AJAX:', error);
+                showAlert('Une erreur est survenue lors de la suppression du contact', 'danger');
+            })
+            .finally(() => {
+                // Réactiver le bouton
+                button.disabled = false;
+                button.innerHTML = originalHtml;
+            });
+        }
+    };
+});
+</script>

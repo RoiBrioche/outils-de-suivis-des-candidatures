@@ -135,6 +135,43 @@ class Statut(models.Model):
         return self.nom
 
 
+class Contact(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    nom = models.CharField(max_length=200, verbose_name="Nom")
+    prenom = models.CharField(max_length=100, blank=True, null=True, verbose_name="Prénom")
+    poste_occupe = models.CharField(max_length=100, blank=True, null=True, verbose_name="Poste occupé")
+    email = models.EmailField(blank=True, null=True, verbose_name="Email")
+    telephone = models.CharField(max_length=20, blank=True, null=True, verbose_name="Téléphone")
+    linkedin_url = models.URLField(blank=True, null=True, verbose_name="URL LinkedIn")
+    commentaires = models.TextField(blank=True, null=True, verbose_name="Commentaires")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créé le")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifié le")
+
+    class Meta:
+        verbose_name = "Contact"
+        verbose_name_plural = "Contacts"
+        ordering = ['nom', 'prenom']
+        indexes = [
+            models.Index(fields=['nom']),
+            models.Index(fields=['email']),
+        ]
+
+    def __str__(self):
+        if self.prenom and self.poste_occupe:
+            return f"{self.prenom} {self.nom} ({self.poste_occupe})"
+        elif self.prenom:
+            return f"{self.prenom} {self.nom}"
+        elif self.poste_occupe:
+            return f"{self.nom} ({self.poste_occupe})"
+        return self.nom
+
+    @property
+    def nom_complet(self):
+        if self.prenom:
+            return f"{self.prenom} {self.nom}"
+        return self.nom
+
+
 class PisteCandidature(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     periode_recherche = models.ForeignKey(
@@ -146,7 +183,6 @@ class PisteCandidature(models.Model):
     entreprise = models.CharField(max_length=200, default='', verbose_name="Entreprise")
     poste_cible = models.CharField(max_length=200, blank=True, verbose_name="Poste ciblé")
     source = models.CharField(max_length=200, blank=True, verbose_name="Source")
-    contact = models.CharField(max_length=200, blank=True, verbose_name="Contact")
     url_annonce = models.URLField(blank=True, verbose_name="URL de l'annonce")
     commentaires = models.TextField(blank=True, verbose_name="Commentaires")
     etat = models.CharField(
@@ -162,6 +198,12 @@ class PisteCandidature(models.Model):
         blank=True,
         related_name='pistes_source',
         verbose_name="Candidature associée"
+    )
+    contacts = models.ManyToManyField(
+        'Contact',
+        blank=True,
+        related_name='pistes_candidature',
+        verbose_name="Contacts"
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créé le")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifié le")
@@ -222,6 +264,12 @@ class Candidature(models.Model):
         verbose_name="Source de la priorité"
     )
     date_priorite = models.DateField(null=True, blank=True, verbose_name="Date de la priorité")
+    contacts = models.ManyToManyField(
+        'Contact',
+        blank=True,
+        related_name='candidatures',
+        verbose_name="Contacts"
+    )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créé le")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifié le")
 

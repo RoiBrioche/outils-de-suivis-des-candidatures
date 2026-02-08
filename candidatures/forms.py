@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from .models import (
-    PeriodeRecherche, Candidature, PisteCandidature, Statut, DocumentCandidature,
+    PeriodeRecherche, Candidature, PisteCandidature, Statut, DocumentCandidature, Contact,
     TypeContrat, Priorite, SourcePriorite, EtatPiste, TypeDocument
 )
 
@@ -54,16 +54,46 @@ class StatutForm(forms.ModelForm):
         }
 
 
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        fields = ['nom', 'prenom', 'poste_occupe', 'email', 'telephone', 'linkedin_url', 'commentaires']
+        widgets = {
+            'nom': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nom obligatoire'}),
+            'prenom': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Prénom'}),
+            'poste_occupe': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ex: RH, Lead Tech, Manager...'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'email@exemple.com'}),
+            'telephone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '06 12 34 56 78'}),
+            'linkedin_url': forms.URLInput(attrs={'class': 'form-control', 'placeholder': 'https://linkedin.com/in/...'}),
+            'commentaires': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Notes sur ce contact...'}),
+        }
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if email and Contact.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
+            raise ValidationError('Un contact avec cet email existe déjà.')
+        return email
+
+    def clean_telephone(self):
+        telephone = self.cleaned_data.get('telephone')
+        if telephone:
+            # Nettoyage simple du numéro de téléphone
+            import re
+            telephone = re.sub(r'[^\d+]', '', telephone)
+            if len(telephone) < 10:
+                raise ValidationError('Le numéro de téléphone semble trop court.')
+        return telephone
+
+
 class PisteCandidatureForm(forms.ModelForm):
     class Meta:
         model = PisteCandidature
-        fields = ['periode_recherche', 'entreprise', 'poste_cible', 'source', 'contact', 'url_annonce', 'commentaires', 'etat', 'candidature']
+        fields = ['periode_recherche', 'entreprise', 'poste_cible', 'source', 'url_annonce', 'commentaires', 'etat', 'candidature']
         widgets = {
             'periode_recherche': forms.Select(attrs={'class': 'form-control'}),
             'entreprise': forms.TextInput(attrs={'class': 'form-control'}),
             'poste_cible': forms.TextInput(attrs={'class': 'form-control'}),
             'source': forms.TextInput(attrs={'class': 'form-control'}),
-            'contact': forms.TextInput(attrs={'class': 'form-control'}),
             'url_annonce': forms.URLInput(attrs={'class': 'form-control'}),
             'commentaires': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'etat': forms.Select(attrs={'class': 'form-control'}),
@@ -102,6 +132,7 @@ class CandidatureForm(forms.ModelForm):
             'statut_contextuel',
             'priorite',
             'priorite_source',
+            'contacts',
         ]
         widgets = {
             'periode_recherche': forms.Select(attrs={'class': 'form-control'}),
@@ -127,6 +158,7 @@ class CandidatureForm(forms.ModelForm):
             ),
             'priorite': forms.Select(attrs={'class': 'form-control'}),
             'priorite_source': forms.Select(attrs={'class': 'form-control'}),
+            'contacts': forms.SelectMultiple(attrs={'class': 'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -183,14 +215,19 @@ class CandidatureForm(forms.ModelForm):
 
 
 class DocumentCandidatureForm(forms.ModelForm):
+    fichier = forms.FileField(
+        label="Fichier",
+        widget=forms.FileInput(attrs={'class': 'form-control'})
+    )
+
     class Meta:
         model = DocumentCandidature
-        fields = ['type_document', 'chemin_fichier', 'commentaire']
+        fields = ['type_document', 'nom_fichier', 'commentaire']
         widgets = {
             'type_document': forms.Select(attrs={'class': 'form-control'}),
-            'chemin_fichier': forms.TextInput(attrs={
+            'nom_fichier': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'C:\\Users\\Nom\\Documents\\mon_cv.pdf'
+                'placeholder': 'Nom du fichier (ex: CV_JeanDupont.pdf)'
             }),
             'commentaire': forms.Textarea(attrs={
                 'class': 'form-control', 
@@ -198,6 +235,10 @@ class DocumentCandidatureForm(forms.ModelForm):
                 'placeholder': 'Notes sur ce document...'
             }),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nom_fichier'].required = True
 
 
 class CandidatureSearchForm(forms.Form):

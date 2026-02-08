@@ -71,9 +71,15 @@
                     </div>
 
                     <div class="d-flex justify-content-between">
-                        <a href="{% url 'candidatures:candidature-detail' form.candidature.value %}" class="btn btn-secondary">
-                            <i class="bi bi-arrow-left"></i> Retour à la candidature
-                        </a>
+                        {% if candidature_id %}
+                            <a href="{% url 'candidatures:candidature-detail' candidature_id %}" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Retour à la candidature
+                            </a>
+                        {% else %}
+                            <a href="{% url 'candidatures:candidature-list' %}" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Retour à la liste
+                            </a>
+                        {% endif %}
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-check-circle"></i> Ajouter le document
                         </button>

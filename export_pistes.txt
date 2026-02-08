@@ -1,0 +1,906 @@
+============================================================
+1. TABLE : candidatures_contact
+============================================================
+[
+    {
+        "id": "ad236d3d6eba4d45a50750273fd2752c",
+        "nom": "Thomas",
+        "prenom": "Emma",
+        "poste_occupe": "Talent Acquisition",
+        "email": "emma.thomas@example.com",
+        "telephone": "0631353743",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.779919",
+        "updated_at": "2026-02-04 20:07:26.779928"
+    },
+    {
+        "id": "e92ac9a1336a4171aba10822b7bbad7f",
+        "nom": "Martin",
+        "prenom": "Charlie",
+        "poste_occupe": "Lead Dev",
+        "email": "charlie.martin@example.com",
+        "telephone": "0674677866",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.780250",
+        "updated_at": "2026-02-04 20:07:26.780257"
+    },
+    {
+        "id": "1fe7d65318ea43349646bb017acf1401",
+        "nom": "Martin",
+        "prenom": "Grace",
+        "poste_occupe": "Lead Dev",
+        "email": "grace.martin@example.com",
+        "telephone": "0663030909",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.780359",
+        "updated_at": "2026-02-04 20:07:26.780364"
+    },
+    {
+        "id": "9e209652e1834f10831ec55048684f3d",
+        "nom": "Durand",
+        "prenom": "Frank",
+        "poste_occupe": "RH",
+        "email": "frank.durand@example.com",
+        "telephone": "0631988497",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.780455",
+        "updated_at": "2026-02-04 20:07:26.780459"
+    },
+    {
+        "id": "471f87ac1eb44da3a9de22cc19aa9569",
+        "nom": "Durand",
+        "prenom": "David",
+        "poste_occupe": "RH",
+        "email": "david.durand@example.com",
+        "telephone": "0641992778",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.780540",
+        "updated_at": "2026-02-04 20:07:26.780545"
+    },
+    {
+        "id": "134a5f27853141c5a56adc38cc227cf5",
+        "nom": "Richard",
+        "prenom": "Frank",
+        "poste_occupe": "RH",
+        "email": "frank.richard@example.com",
+        "telephone": "0652553222",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.780623",
+        "updated_at": "2026-02-04 20:07:26.780627"
+    },
+    {
+        "id": "5c8b02c4e9744800943c196f490fd4c4",
+        "nom": "Thomas",
+        "prenom": "Bob",
+        "poste_occupe": "CEO",
+        "email": "bob.thomas@example.com",
+        "telephone": "0667249947",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.780703",
+        "updated_at": "2026-02-04 20:07:26.780707"
+    },
+    {
+        "id": "0597a074defc44a9a695be8c0775ab2d",
+        "nom": "Richard",
+        "prenom": "Frank",
+        "poste_occupe": "CTO",
+        "email": "frank.richard@example.com",
+        "telephone": "0642110109",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.780780",
+        "updated_at": "2026-02-04 20:07:26.780785"
+    },
+    {
+        "id": "c165ebf21e6440f990f029579db14871",
+        "nom": "Bernard",
+        "prenom": "Alice",
+        "poste_occupe": "CEO",
+        "email": "alice.bernard@example.com",
+        "telephone": "0666838039",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.780864",
+        "updated_at": "2026-02-04 20:07:26.780868"
+    },
+    {
+        "id": "3afec20c64954cf38b45ecab99417e36",
+        "nom": "Martin",
+        "prenom": "David",
+        "poste_occupe": "RH",
+        "email": "david.martin@example.com",
+        "telephone": "0694488605",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.780940",
+        "updated_at": "2026-02-04 20:07:26.780944"
+    },
+    {
+        "id": "f7d6fa57773542fc97566aee93ecf19f",
+        "nom": "Durand",
+        "prenom": "Emma",
+        "poste_occupe": "Lead Dev",
+        "email": "emma.durand@example.com",
+        "telephone": "0696450666",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.781018",
+        "updated_at": "2026-02-04 20:07:26.781023"
+    },
+    {
+        "id": "bfdb5732bded4545a15fe8d6c32bcd6f",
+        "nom": "Thomas",
+        "prenom": "Frank",
+        "poste_occupe": "CEO",
+        "email": "frank.thomas@example.com",
+        "telephone": "0634036138",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.781100",
+        "updated_at": "2026-02-04 20:07:26.781105"
+    },
+    {
+        "id": "23ecd6b9001e4111bd3b1218159b2513",
+        "nom": "Durand",
+        "prenom": "Bob",
+        "poste_occupe": "Lead Dev",
+        "email": "bob.durand@example.com",
+        "telephone": "0646437028",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.781178",
+        "updated_at": "2026-02-04 20:07:26.781182"
+    },
+    {
+        "id": "c8ee3f306c724c69961a055ada440cf3",
+        "nom": "Petit",
+        "prenom": "Grace",
+        "poste_occupe": "Talent Acquisition",
+        "email": "grace.petit@example.com",
+        "telephone": "0688889096",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.781255",
+        "updated_at": "2026-02-04 20:07:26.781260"
+    },
+    {
+        "id": "72a00884567749a7a90a094f2868c199",
+        "nom": "Durand",
+        "prenom": "Grace",
+        "poste_occupe": "Talent Acquisition",
+        "email": "grace.durand@example.com",
+        "telephone": "0641800979",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.781332",
+        "updated_at": "2026-02-04 20:07:26.781337"
+    },
+    {
+        "id": "fb958ecaf3a945ed91a63e38501b4ac9",
+        "nom": "Richard",
+        "prenom": "Grace",
+        "poste_occupe": "Lead Dev",
+        "email": "grace.richard@example.com",
+        "telephone": "0699240718",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.781408",
+        "updated_at": "2026-02-04 20:07:26.781412"
+    },
+    {
+        "id": "8616030893f9457f83d737026f1d9c93",
+        "nom": "Thomas",
+        "prenom": "Bob",
+        "poste_occupe": "RH",
+        "email": "bob.thomas@example.com",
+        "telephone": "0680400544",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.781484",
+        "updated_at": "2026-02-04 20:07:26.781524"
+    },
+    {
+        "id": "38b4abd4718e44948ae22808b38acada",
+        "nom": "Bernard",
+        "prenom": "Emma",
+        "poste_occupe": "CEO",
+        "email": "emma.bernard@example.com",
+        "telephone": "0618670676",
+        "linkedin_url": "https://www.linkedin.com/in/benjamin-frambourt-0374142a1/",
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.781679",
+        "updated_at": "2026-02-04 20:42:39.977901"
+    },
+    {
+        "id": "31215a94692748aa84f39b434766dce8",
+        "nom": "Martin",
+        "prenom": "Henry",
+        "poste_occupe": "Lead Dev",
+        "email": "henry.martin@example.com",
+        "telephone": "0631752049",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.781821",
+        "updated_at": "2026-02-04 20:07:26.781829"
+    },
+    {
+        "id": "455aa54fe6d14ba59972209330411c33",
+        "nom": "Durand",
+        "prenom": "Henry",
+        "poste_occupe": "Talent Acquisition",
+        "email": "henry.durand@example.com",
+        "telephone": "0610637026",
+        "linkedin_url": null,
+        "commentaires": "Généré auto",
+        "created_at": "2026-02-04 20:07:26.781981",
+        "updated_at": "2026-02-04 20:07:26.781990"
+    },
+    {
+        "id": "7f5d43c57e774b1e87a6581bdee6ab0b",
+        "nom": "Brieuc",
+        "prenom": "mandin",
+        "poste_occupe": null,
+        "email": null,
+        "telephone": "0620066083",
+        "linkedin_url": null,
+        "commentaires": "",
+        "created_at": "2026-02-05 15:18:41.277610",
+        "updated_at": "2026-02-05 15:18:41.277621"
+    },
+    {
+        "id": "f69e1acc61f444b1a3c0c1a07a04c7de",
+        "nom": "asass",
+        "prenom": "asas",
+        "poste_occupe": null,
+        "email": null,
+        "telephone": "0620066083",
+        "linkedin_url": null,
+        "commentaires": "",
+        "created_at": "2026-02-05 15:20:58.543512",
+        "updated_at": "2026-02-05 15:20:58.543526"
+    }
+]
+
+============================================================
+2. TABLE : candidatures_pistecandidature
+============================================================
+[
+    {
+        "id": "5090c803d47943e390a24e3f00625224",
+        "entreprise": "InnovateTech",
+        "poste_cible": "Architect",
+        "source": "AngelList",
+        "url_annonce": "https://example.com/job/8cebd748",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "EN_PREPARATION",
+        "created_at": "2026-02-04 20:07:26.824081",
+        "updated_at": "2026-02-04 20:07:26.824097",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "9aa18ae05dd74479bba9dbf9a5b5a5dc",
+        "entreprise": "Future Systems",
+        "poste_cible": "Architect",
+        "source": "Otta",
+        "url_annonce": "https://example.com/job/7c765154",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "A_CONTACTER",
+        "created_at": "2026-02-04 20:07:26.825209",
+        "updated_at": "2026-02-04 20:07:26.825219",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "4848d0c8fec64227845cc8f0e604484e",
+        "entreprise": "NextGen Software",
+        "poste_cible": "Senior Developer",
+        "source": "Otta",
+        "url_annonce": "https://example.com/job/b270f9e1",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "ABANDONNEE",
+        "created_at": "2026-02-04 20:07:26.825857",
+        "updated_at": "2026-02-04 20:07:26.825864",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "4f9f6765d18f4cc89eb6b49ce76495a9",
+        "entreprise": "NextGen Software",
+        "poste_cible": "Architect",
+        "source": "Welcome to the Jungle",
+        "url_annonce": "https://example.com/job/b3a9653a",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "ABANDONNEE",
+        "created_at": "2026-02-04 20:07:26.826332",
+        "updated_at": "2026-02-04 20:07:26.826339",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "a6b9c51d93b94ceeb1ce4e4c1d1fb699",
+        "entreprise": "NextGen Software",
+        "poste_cible": "Lead Python",
+        "source": "Otta",
+        "url_annonce": "https://example.com/job/7e45d73f",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "A_CONTACTER",
+        "created_at": "2026-02-04 20:07:26.826913",
+        "updated_at": "2026-02-04 20:07:26.826920",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "4979a64995d84331943a3ac5ece7ec1b",
+        "entreprise": "NextGen Software",
+        "poste_cible": "Tech Lead",
+        "source": "AngelList",
+        "url_annonce": "https://example.com/job/a4bc82b3",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "A_CONTACTER",
+        "created_at": "2026-02-04 20:07:26.827472",
+        "updated_at": "2026-02-04 20:07:26.827479",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "0eb1ae91d6e04b9cace2058bcab82c6d",
+        "entreprise": "NextGen Software",
+        "poste_cible": "Tech Lead",
+        "source": "Hired",
+        "url_annonce": "https://example.com/job/3fdeb0e4",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "EN_PREPARATION",
+        "created_at": "2026-02-04 20:07:26.827917",
+        "updated_at": "2026-02-04 20:07:26.827924",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "bbf47a62fbce462f851f15dea03e97e8",
+        "entreprise": "Future Systems",
+        "poste_cible": "Architect",
+        "source": "Welcome to the Jungle",
+        "url_annonce": "https://example.com/job/992df48a",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "EN_PREPARATION",
+        "created_at": "2026-02-04 20:07:26.828467",
+        "updated_at": "2026-02-04 20:07:26.828474",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "7eeaca34bbfe4589b3c5e1275aace2aa",
+        "entreprise": "Alpha Corp",
+        "poste_cible": "Architect",
+        "source": "Hired",
+        "url_annonce": "https://example.com/job/b57483ed",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "EN_PREPARATION",
+        "created_at": "2026-02-04 20:07:26.829018",
+        "updated_at": "2026-02-04 20:07:26.829024",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "73fbd614a92343058715726d05cc7092",
+        "entreprise": "NextGen Software",
+        "poste_cible": "Senior Developer",
+        "source": "Otta",
+        "url_annonce": "https://example.com/job/863f5e26",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "A_CONTACTER",
+        "created_at": "2026-02-04 20:07:26.829557",
+        "updated_at": "2026-02-04 20:07:26.829563",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "18dde3b566974b42abe054fac6c04118",
+        "entreprise": "Alpha Corp",
+        "poste_cible": "Lead Python",
+        "source": "Welcome to the Jungle",
+        "url_annonce": "https://example.com/job/9868f706",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "A_ETUDIER",
+        "created_at": "2026-02-04 20:07:26.829984",
+        "updated_at": "2026-02-04 20:07:26.829990",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "0b3c1e062c204aa2951af1ba2527b6d8",
+        "entreprise": "Future Systems",
+        "poste_cible": "Architect",
+        "source": "Hired",
+        "url_annonce": "https://example.com/job/a85ed510",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "EN_PREPARATION",
+        "created_at": "2026-02-04 20:07:26.830520",
+        "updated_at": "2026-02-04 20:07:26.830526",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "1e5dae39294747d4ae071f418a983a87",
+        "entreprise": "NextGen Software",
+        "poste_cible": "Senior Developer",
+        "source": "Otta",
+        "url_annonce": "https://example.com/job/2636f822",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "ABANDONNEE",
+        "created_at": "2026-02-04 20:07:26.831047",
+        "updated_at": "2026-02-04 20:07:26.831054",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "b38c0f77ada54606898cde78e412f4d3",
+        "entreprise": "NextGen Software",
+        "poste_cible": "Senior Developer",
+        "source": "AngelList",
+        "url_annonce": "https://example.com/job/f4f2caee",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "A_ETUDIER",
+        "created_at": "2026-02-04 20:07:26.831578",
+        "updated_at": "2026-02-04 20:07:26.831584",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "0916e1dcc0d440e5b8fa2103a43bf762",
+        "entreprise": "Alpha Corp",
+        "poste_cible": "Lead Python",
+        "source": "Otta",
+        "url_annonce": "https://example.com/job/58a59de7",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "A_ETUDIER",
+        "created_at": "2026-02-04 20:07:26.831991",
+        "updated_at": "2026-02-04 20:07:26.831997",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "f52e1822c74c421ba77d285b7bf5fb5a",
+        "entreprise": "Alpha Corp",
+        "poste_cible": "Tech Lead",
+        "source": "Otta",
+        "url_annonce": "https://example.com/job/f880e9d9",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "ABANDONNEE",
+        "created_at": "2026-02-04 20:07:26.832503",
+        "updated_at": "2026-02-04 20:07:26.832509",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "64e99e591c224832b7426d04a2223a7a",
+        "entreprise": "InnovateTech",
+        "poste_cible": "Senior Developer",
+        "source": "Otta",
+        "url_annonce": "https://example.com/job/76b99a08",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "ABANDONNEE",
+        "created_at": "2026-02-04 20:07:26.833042",
+        "updated_at": "2026-02-04 20:07:26.833049",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "33258615d929419dac4438b7d0263bfe",
+        "entreprise": "NextGen Software",
+        "poste_cible": "Tech Lead",
+        "source": "Welcome to the Jungle",
+        "url_annonce": "https://example.com/job/7e76cd9b",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "A_ETUDIER",
+        "created_at": "2026-02-04 20:07:26.833589",
+        "updated_at": "2026-02-04 20:07:26.833596",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "b2a29f2632374459baeff2a165e550a2",
+        "entreprise": "NextGen Software",
+        "poste_cible": "Architect",
+        "source": "AngelList",
+        "url_annonce": "https://example.com/job/d396176d",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "A_ETUDIER",
+        "created_at": "2026-02-04 20:07:26.834376",
+        "updated_at": "2026-02-04 20:07:26.834389",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "00a435ac7f1340c0ad7886c463742f37",
+        "entreprise": "InnovateTech",
+        "poste_cible": "Lead Python",
+        "source": "AngelList",
+        "url_annonce": "https://example.com/job/7bafafad",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "A_CONTACTER",
+        "created_at": "2026-02-04 20:07:26.835076",
+        "updated_at": "2026-02-04 20:07:26.835083",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "3f8390b3ee064e7f88267805bc42745a",
+        "entreprise": "Alpha Corp",
+        "poste_cible": "Architect",
+        "source": "Welcome to the Jungle",
+        "url_annonce": "https://example.com/job/06e0f2ac",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "A_CONTACTER",
+        "created_at": "2026-02-04 20:07:26.835640",
+        "updated_at": "2026-02-04 20:07:26.835647",
+        "candidature_id": null,
+        "periode_recherche_id": "b78a145bee574bf3b3b203e157670564"
+    },
+    {
+        "id": "c11dd9c654a34d208d9d405ab8d67a06",
+        "entreprise": "NextGen Software",
+        "poste_cible": "Senior Developer",
+        "source": "Hired",
+        "url_annonce": "https://example.com/job/3652c42b",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "EN_PREPARATION",
+        "created_at": "2026-02-04 20:07:26.836605",
+        "updated_at": "2026-02-04 20:07:26.836618",
+        "candidature_id": null,
+        "periode_recherche_id": "b78a145bee574bf3b3b203e157670564"
+    },
+    {
+        "id": "1a15243e458b4aee84c542c5c0fc09e6",
+        "entreprise": "Alpha Corp",
+        "poste_cible": "Tech Lead",
+        "source": "Otta",
+        "url_annonce": "https://example.com/job/99ca23e6",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "TRANSFORMEE",
+        "created_at": "2026-02-04 20:07:26.837542",
+        "updated_at": "2026-02-04 20:07:26.837549",
+        "candidature_id": "75c85bcdc00e41d794f6ec3da8bbc544",
+        "periode_recherche_id": "b78a145bee574bf3b3b203e157670564"
+    },
+    {
+        "id": "0012adb8fe2445a1b350322a57a38680",
+        "entreprise": "Alpha Corp",
+        "poste_cible": "Tech Lead",
+        "source": "AngelList",
+        "url_annonce": "https://example.com/job/fdff69ea",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "A_CONTACTER",
+        "created_at": "2026-02-04 20:07:26.838254",
+        "updated_at": "2026-02-05 14:52:34.823717",
+        "candidature_id": null,
+        "periode_recherche_id": "b78a145bee574bf3b3b203e157670564"
+    },
+    {
+        "id": "42314c5f985148769ac5608461f1762f",
+        "entreprise": "Alpha Corp",
+        "poste_cible": "Architect",
+        "source": "Otta",
+        "url_annonce": "https://example.com/job/0c860d57",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "TRANSFORMEE",
+        "created_at": "2026-02-04 20:07:26.838942",
+        "updated_at": "2026-02-04 20:07:26.838948",
+        "candidature_id": "f8fc69e561174fc2b329781cda460ec2",
+        "periode_recherche_id": "b78a145bee574bf3b3b203e157670564"
+    },
+    {
+        "id": "480bfdcb52ca4d48869a17076416e1f1",
+        "entreprise": "NextGen Software",
+        "poste_cible": "Architect",
+        "source": "AngelList",
+        "url_annonce": "https://example.com/job/a220607b",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "A_ETUDIER",
+        "created_at": "2026-02-04 20:07:26.839506",
+        "updated_at": "2026-02-04 20:07:26.839513",
+        "candidature_id": null,
+        "periode_recherche_id": "8fa98fffecb5461b9f8ac458da25e44c"
+    },
+    {
+        "id": "9f5a71e927a646b5a7c3ed9e17e3be5c",
+        "entreprise": "Alpha Corp",
+        "poste_cible": "Tech Lead",
+        "source": "AngelList",
+        "url_annonce": "https://example.com/job/107eb5f3",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "EN_PREPARATION",
+        "created_at": "2026-02-04 20:07:26.840047",
+        "updated_at": "2026-02-04 20:07:26.840054",
+        "candidature_id": null,
+        "periode_recherche_id": "8fa98fffecb5461b9f8ac458da25e44c"
+    },
+    {
+        "id": "2d96bba6b32a4344bb2766373ac6f51b",
+        "entreprise": "Alpha Corp",
+        "poste_cible": "Lead Python",
+        "source": "Otta",
+        "url_annonce": "https://example.com/job/9acc392f",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "A_ETUDIER",
+        "created_at": "2026-02-04 20:07:26.840477",
+        "updated_at": "2026-02-04 20:07:26.840483",
+        "candidature_id": null,
+        "periode_recherche_id": "8fa98fffecb5461b9f8ac458da25e44c"
+    },
+    {
+        "id": "da043bd6bd2844368dc313db1aa871b7",
+        "entreprise": "NextGen Software",
+        "poste_cible": "Lead Python",
+        "source": "AngelList",
+        "url_annonce": "https://example.com/job/51421178",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "TRANSFORMEE",
+        "created_at": "2026-02-04 20:07:26.841020",
+        "updated_at": "2026-02-04 20:07:26.841026",
+        "candidature_id": "b8176bb9167c46d0acacb76dd86c27c3",
+        "periode_recherche_id": "8fa98fffecb5461b9f8ac458da25e44c"
+    },
+    {
+        "id": "1ffc31dcc48a4f72a2c6840897201a07",
+        "entreprise": "InnovateTech",
+        "poste_cible": "Senior Developer",
+        "source": "Welcome to the Jungle",
+        "url_annonce": "https://example.com/job/38be0f3d",
+        "commentaires": "Piste générée automatiquement",
+        "etat": "TRANSFORMEE",
+        "created_at": "2026-02-04 20:07:26.841597",
+        "updated_at": "2026-02-04 20:07:26.841604",
+        "candidature_id": "b8176bb9167c46d0acacb76dd86c27c3",
+        "periode_recherche_id": "8fa98fffecb5461b9f8ac458da25e44c"
+    },
+    {
+        "id": "7f7351e54b454d69ad7273c77ae278f9",
+        "entreprise": "a",
+        "poste_cible": "a",
+        "source": "a",
+        "url_annonce": "",
+        "commentaires": "a",
+        "etat": "A_CONTACTER",
+        "created_at": "2026-02-04 20:26:50.364911",
+        "updated_at": "2026-02-05 14:52:57.229709",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "31c05caca81549daaa8ef702fa207dd0",
+        "entreprise": "Jeancul",
+        "poste_cible": "Enculé",
+        "source": "Mes couilles",
+        "url_annonce": "",
+        "commentaires": "abcderfg \r\n\r\nnan jec en vrai c'est azerty",
+        "etat": "A_ETUDIER",
+        "created_at": "2026-02-05 14:57:00.094422",
+        "updated_at": "2026-02-05 15:18:41.278750",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    },
+    {
+        "id": "2ed3d2718f124742a252c2c194f13a4b",
+        "entreprise": "Lul",
+        "poste_cible": "Pate",
+        "source": "NON",
+        "url_annonce": "",
+        "commentaires": "assaswxx\r\n\r\n\r\nsazsazsas",
+        "etat": "A_CONTACTER",
+        "created_at": "2026-02-05 15:20:58.540151",
+        "updated_at": "2026-02-05 15:20:58.544135",
+        "candidature_id": null,
+        "periode_recherche_id": "19d487dc20a1462aa17ccda85e848882"
+    }
+]
+
+============================================================
+3. TABLE : candidatures_pistecandidature_contacts (IDs bruts)
+============================================================
+[
+    {
+        "id": 1,
+        "pistecandidature_id": "5090c803d47943e390a24e3f00625224",
+        "contact_id": "fb958ecaf3a945ed91a63e38501b4ac9"
+    },
+    {
+        "id": 2,
+        "pistecandidature_id": "9aa18ae05dd74479bba9dbf9a5b5a5dc",
+        "contact_id": "8616030893f9457f83d737026f1d9c93"
+    },
+    {
+        "id": 3,
+        "pistecandidature_id": "9aa18ae05dd74479bba9dbf9a5b5a5dc",
+        "contact_id": "fb958ecaf3a945ed91a63e38501b4ac9"
+    },
+    {
+        "id": 4,
+        "pistecandidature_id": "4f9f6765d18f4cc89eb6b49ce76495a9",
+        "contact_id": "c8ee3f306c724c69961a055ada440cf3"
+    },
+    {
+        "id": 5,
+        "pistecandidature_id": "4f9f6765d18f4cc89eb6b49ce76495a9",
+        "contact_id": "38b4abd4718e44948ae22808b38acada"
+    },
+    {
+        "id": 6,
+        "pistecandidature_id": "a6b9c51d93b94ceeb1ce4e4c1d1fb699",
+        "contact_id": "38b4abd4718e44948ae22808b38acada"
+    },
+    {
+        "id": 7,
+        "pistecandidature_id": "a6b9c51d93b94ceeb1ce4e4c1d1fb699",
+        "contact_id": "fb958ecaf3a945ed91a63e38501b4ac9"
+    },
+    {
+        "id": 8,
+        "pistecandidature_id": "0eb1ae91d6e04b9cace2058bcab82c6d",
+        "contact_id": "0597a074defc44a9a695be8c0775ab2d"
+    },
+    {
+        "id": 9,
+        "pistecandidature_id": "bbf47a62fbce462f851f15dea03e97e8",
+        "contact_id": "bfdb5732bded4545a15fe8d6c32bcd6f"
+    },
+    {
+        "id": 10,
+        "pistecandidature_id": "7eeaca34bbfe4589b3c5e1275aace2aa",
+        "contact_id": "3afec20c64954cf38b45ecab99417e36"
+    },
+    {
+        "id": 11,
+        "pistecandidature_id": "7eeaca34bbfe4589b3c5e1275aace2aa",
+        "contact_id": "f7d6fa57773542fc97566aee93ecf19f"
+    },
+    {
+        "id": 12,
+        "pistecandidature_id": "18dde3b566974b42abe054fac6c04118",
+        "contact_id": "8616030893f9457f83d737026f1d9c93"
+    },
+    {
+        "id": 13,
+        "pistecandidature_id": "18dde3b566974b42abe054fac6c04118",
+        "contact_id": "0597a074defc44a9a695be8c0775ab2d"
+    },
+    {
+        "id": 14,
+        "pistecandidature_id": "0b3c1e062c204aa2951af1ba2527b6d8",
+        "contact_id": "5c8b02c4e9744800943c196f490fd4c4"
+    },
+    {
+        "id": 15,
+        "pistecandidature_id": "1e5dae39294747d4ae071f418a983a87",
+        "contact_id": "ad236d3d6eba4d45a50750273fd2752c"
+    },
+    {
+        "id": 16,
+        "pistecandidature_id": "1e5dae39294747d4ae071f418a983a87",
+        "contact_id": "1fe7d65318ea43349646bb017acf1401"
+    },
+    {
+        "id": 17,
+        "pistecandidature_id": "0916e1dcc0d440e5b8fa2103a43bf762",
+        "contact_id": "31215a94692748aa84f39b434766dce8"
+    },
+    {
+        "id": 18,
+        "pistecandidature_id": "f52e1822c74c421ba77d285b7bf5fb5a",
+        "contact_id": "c8ee3f306c724c69961a055ada440cf3"
+    },
+    {
+        "id": 19,
+        "pistecandidature_id": "f52e1822c74c421ba77d285b7bf5fb5a",
+        "contact_id": "5c8b02c4e9744800943c196f490fd4c4"
+    },
+    {
+        "id": 20,
+        "pistecandidature_id": "64e99e591c224832b7426d04a2223a7a",
+        "contact_id": "3afec20c64954cf38b45ecab99417e36"
+    },
+    {
+        "id": 21,
+        "pistecandidature_id": "33258615d929419dac4438b7d0263bfe",
+        "contact_id": "471f87ac1eb44da3a9de22cc19aa9569"
+    },
+    {
+        "id": 22,
+        "pistecandidature_id": "33258615d929419dac4438b7d0263bfe",
+        "contact_id": "e92ac9a1336a4171aba10822b7bbad7f"
+    },
+    {
+        "id": 23,
+        "pistecandidature_id": "b2a29f2632374459baeff2a165e550a2",
+        "contact_id": "ad236d3d6eba4d45a50750273fd2752c"
+    },
+    {
+        "id": 24,
+        "pistecandidature_id": "00a435ac7f1340c0ad7886c463742f37",
+        "contact_id": "9e209652e1834f10831ec55048684f3d"
+    },
+    {
+        "id": 25,
+        "pistecandidature_id": "c11dd9c654a34d208d9d405ab8d67a06",
+        "contact_id": "38b4abd4718e44948ae22808b38acada"
+    },
+    {
+        "id": 26,
+        "pistecandidature_id": "c11dd9c654a34d208d9d405ab8d67a06",
+        "contact_id": "fb958ecaf3a945ed91a63e38501b4ac9"
+    },
+    {
+        "id": 27,
+        "pistecandidature_id": "1a15243e458b4aee84c542c5c0fc09e6",
+        "contact_id": "8616030893f9457f83d737026f1d9c93"
+    },
+    {
+        "id": 30,
+        "pistecandidature_id": "42314c5f985148769ac5608461f1762f",
+        "contact_id": "9e209652e1834f10831ec55048684f3d"
+    },
+    {
+        "id": 31,
+        "pistecandidature_id": "42314c5f985148769ac5608461f1762f",
+        "contact_id": "455aa54fe6d14ba59972209330411c33"
+    },
+    {
+        "id": 32,
+        "pistecandidature_id": "480bfdcb52ca4d48869a17076416e1f1",
+        "contact_id": "c8ee3f306c724c69961a055ada440cf3"
+    },
+    {
+        "id": 33,
+        "pistecandidature_id": "480bfdcb52ca4d48869a17076416e1f1",
+        "contact_id": "ad236d3d6eba4d45a50750273fd2752c"
+    },
+    {
+        "id": 34,
+        "pistecandidature_id": "1ffc31dcc48a4f72a2c6840897201a07",
+        "contact_id": "455aa54fe6d14ba59972209330411c33"
+    }
+]
+
+============================================================
+4. VUE HUMAINE (Qui est lié à quoi ?)
+============================================================
+🏢 Piste : InnovateTech (Architect)  <--->  👤 Contact : Grace Richard (Lead Dev)
+🏢 Piste : Future Systems (Architect)  <--->  👤 Contact : Bob Thomas (RH)
+🏢 Piste : Future Systems (Architect)  <--->  👤 Contact : Grace Richard (Lead Dev)
+🏢 Piste : NextGen Software (Architect)  <--->  👤 Contact : Grace Petit (Talent Acquisition)
+🏢 Piste : NextGen Software (Architect)  <--->  👤 Contact : Emma Bernard (CEO)
+🏢 Piste : NextGen Software (Lead Python)  <--->  👤 Contact : Emma Bernard (CEO)
+🏢 Piste : NextGen Software (Lead Python)  <--->  👤 Contact : Grace Richard (Lead Dev)
+🏢 Piste : NextGen Software (Tech Lead)  <--->  👤 Contact : Frank Richard (CTO)
+🏢 Piste : Future Systems (Architect)  <--->  👤 Contact : Frank Thomas (CEO)
+🏢 Piste : Alpha Corp (Architect)  <--->  👤 Contact : David Martin (RH)
+🏢 Piste : Alpha Corp (Architect)  <--->  👤 Contact : Emma Durand (Lead Dev)
+🏢 Piste : Alpha Corp (Lead Python)  <--->  👤 Contact : Bob Thomas (RH)
+🏢 Piste : Alpha Corp (Lead Python)  <--->  👤 Contact : Frank Richard (CTO)
+🏢 Piste : Future Systems (Architect)  <--->  👤 Contact : Bob Thomas (CEO)
+🏢 Piste : NextGen Software (Senior Developer)  <--->  👤 Contact : Emma Thomas (Talent Acquisition)
+🏢 Piste : NextGen Software (Senior Developer)  <--->  👤 Contact : Grace Martin (Lead Dev)
+🏢 Piste : Alpha Corp (Lead Python)  <--->  👤 Contact : Henry Martin (Lead Dev)
+🏢 Piste : Alpha Corp (Tech Lead)  <--->  👤 Contact : Grace Petit (Talent Acquisition)
+🏢 Piste : Alpha Corp (Tech Lead)  <--->  👤 Contact : Bob Thomas (CEO)
+🏢 Piste : InnovateTech (Senior Developer)  <--->  👤 Contact : David Martin (RH)
+🏢 Piste : NextGen Software (Tech Lead)  <--->  👤 Contact : David Durand (RH)
+🏢 Piste : NextGen Software (Tech Lead)  <--->  👤 Contact : Charlie Martin (Lead Dev)
+🏢 Piste : NextGen Software (Architect)  <--->  👤 Contact : Emma Thomas (Talent Acquisition)
+🏢 Piste : InnovateTech (Lead Python)  <--->  👤 Contact : Frank Durand (RH)
+🏢 Piste : NextGen Software (Senior Developer)  <--->  👤 Contact : Emma Bernard (CEO)
+🏢 Piste : NextGen Software (Senior Developer)  <--->  👤 Contact : Grace Richard (Lead Dev)
+🏢 Piste : Alpha Corp (Tech Lead)  <--->  👤 Contact : Bob Thomas (RH)
+🏢 Piste : Alpha Corp (Architect)  <--->  👤 Contact : Frank Durand (RH)
+🏢 Piste : Alpha Corp (Architect)  <--->  👤 Contact : Henry Durand (Talent Acquisition)
+🏢 Piste : NextGen Software (Architect)  <--->  👤 Contact : Grace Petit (Talent Acquisition)
+🏢 Piste : NextGen Software (Architect)  <--->  👤 Contact : Emma Thomas (Talent Acquisition)
+🏢 Piste : InnovateTech (Senior Developer)  <--->  👤 Contact : Henry Durand (Talent Acquisition)
