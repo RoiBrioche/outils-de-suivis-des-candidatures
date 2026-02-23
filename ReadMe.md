@@ -89,6 +89,7 @@ venv\Scripts\activate      # Windows
 3. **Install dependencies**  
 ```bash
 pip install -r requirements.txt
+pip install -r requirements-dev.txt  # For development tools
 ```
 
 4. **Initialize the database**  
@@ -163,6 +164,77 @@ The `obsidian-AI-docs/` folder contains authoritative project documentation:
 - **02-architecture.md**: Technical architecture and patterns
 - **03-validation-errors.md**: Validation strategy and error handling
 - **04-ui-scope.md**: UI requirements and constraints
+
+---
+
+## 🧪 Development Tools & CI
+
+This project includes a complete CI/CD pipeline with quality assurance tools.
+
+### Local Development Commands
+
+#### Code Quality
+```bash
+# Format code with black
+black .
+
+# Check code formatting (without modifying)
+black --check .
+
+# Lint code with ruff
+ruff check .
+
+# Fix linting issues automatically
+ruff check . --fix
+```
+
+#### Testing
+```bash
+# Run all tests with coverage
+pytest --cov=.
+
+# Run tests with verbose output
+pytest -v
+
+# Run specific test file
+pytest tests/test_django_startup.py
+```
+
+#### Security
+```bash
+# Security scan for code vulnerabilities
+bandit -r .
+
+# Check for known vulnerabilities in dependencies
+pip-audit
+```
+
+#### Coverage Report
+```bash
+# Generate HTML coverage report
+pytest --cov=. --cov-report=html
+
+# View coverage report
+# Open htmlcov/index.html in your browser
+```
+
+### CI/CD Pipeline
+
+The project includes GitHub Actions workflow (`.github/workflows/ci.yml`) that automatically runs on:
+- Push to `main`, `master`, or `develop` branches
+- Pull requests to these branches
+
+**Pipeline Steps:**
+1. **Code Quality**: ruff linting + black formatting check
+2. **Security**: bandit (code security) + pip-audit (dependency vulnerabilities)
+3. **Testing**: pytest with coverage reporting
+4. **Coverage**: Optional upload to Codecov (doesn't fail CI if coverage is low)
+
+**Quality Standards:**
+- Line length: 88 characters (black)
+- Linting rules: E, F, I, UP, B (ruff)
+- Test settings: `job_tracker.settings.test`
+- Coverage threshold: 0% (non-blocking for now)
 
 ---
 
