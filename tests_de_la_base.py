@@ -11,7 +11,9 @@ print("Tables:", res.fetchall())
 # Lire des données (exemple sur la table Candidature)
 # Note : Le nom de la table est souvent 'applabel_modelname' dans Django
 try:
-    res = cur.execute("SELECT id, entreprise, poste FROM candidatures_candidature LIMIT 5")
+    res = cur.execute(
+        "SELECT id, entreprise, poste FROM candidatures_candidature LIMIT 5"
+    )
     for row in res.fetchall():
         print(row)
 except sqlite3.OperationalError:

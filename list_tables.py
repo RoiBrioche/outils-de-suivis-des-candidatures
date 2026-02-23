@@ -4,6 +4,7 @@ import os
 # Nom du fichier de base de données
 db_file = "db_test.sqlite3"
 
+
 def lister_tables():
     # 1. Vérifier si le fichier existe
     if not os.path.exists(db_file):
@@ -12,14 +13,16 @@ def lister_tables():
         return
 
     print(f"📂 Connexion à : {db_file}\n")
-    
+
     # 2. Connexion
     try:
         conn = sqlite3.connect(db_file)
         cursor = conn.cursor()
 
         # 3. Récupérer la liste des tables (exclure les tables internes de sqlite)
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name;")
+        cursor.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name;"
+        )
         tables = cursor.fetchall()
 
         if not tables:
@@ -35,11 +38,11 @@ def lister_tables():
             try:
                 cursor.execute(f"SELECT COUNT(*) FROM {table_name}")
                 count = cursor.fetchone()[0]
-                
+
                 # Petit bonus visuel : mettre en évidence tes tables "candidatures"
                 prefix = "⭐ " if table_name.startswith("candidatures_") else "   "
                 print(f"{prefix}{table_name:<37} | {count:>6}")
-                
+
             except sqlite3.OperationalError as e:
                 print(f"   {table_name:<37} | Erreur lecture")
 
@@ -51,6 +54,7 @@ def lister_tables():
     finally:
         if conn:
             conn.close()
+
 
 if __name__ == "__main__":
     lister_tables()
